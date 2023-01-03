@@ -30,18 +30,20 @@ with open('players.csv', 'r') as csvfile:
         # Load the web page
         driver.get(url)
 
-		# IMPORTANT: Wait 3 second between each URL request to not overwhelm the server
-        sleep(3)
-
 		# Define a lambda function that returns the value of a JavaScript expression
         S = lambda X: driver.execute_script("return document.body.parentNode.scroll"+X)
 
 		# Set the size of the browser window to the dimensions of the webpage
-        driver.set_window_size(S("Width"), S("Height"))
+        driver.set_window_size(1280, S("Height"))
+        # Maximize the size of the browser window
+        driver.maximize_window()
 
 		# Take and save screenshot
         name = str(row[0])
         driver.find_element(By.TAG_NAME, "body").screenshot(f"./assets/images/{name}.png".format(name))
+
+        # IMPORTANT: Wait 3 second between each URL request to not overwhelm the server
+        sleep(3)
 
 driver.quit()
 

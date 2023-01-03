@@ -40,7 +40,7 @@ with open('players.csv', 'r') as csvfile:
         driver.set_window_size(S("Width"), S("Height"))
 
 		# Take and save screenshot
-        name = str(row[1])
+        name = str(row[0])
         driver.find_element(By.TAG_NAME, "body").screenshot(f"./assets/images/{name}.png".format(name))
 
 driver.quit()

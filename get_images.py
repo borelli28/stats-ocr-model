@@ -13,21 +13,35 @@ options.headless = True
 # Set the path to the webdriver
 driver = webdriver.Chrome(options=options, executable_path="/chromedriver_mac64/chromedriver")
 
-# Get URL parameter passed when file is executed
-arg = sys.argv[1]
-print(f"Parameter passed: {arg}".format(arg))
+# Open the file for reading
+with open('players.csv', 'r') as csvfile:
+    # Create a CSV reader object
+    reader = csv.reader(csvfile)
 
-# Load the web page
-driver.get(arg)
+    # Skip the first row (column names)
+    next(reader)
 
-sleep(1)
+    # Read the rows of the file
+    for row in reader:
+        # Get the url
+        url = str(row[2])
+        print(url)
 
-# Define a lambda function that returns the value of a JavaScript expression
-S = lambda X: driver.execute_script("return document.body.parentNode.scroll"+X)
-# Set the size of the browser window to the dimensions of the webpage
-driver.set_window_size(S("Width"),S("Height"))                                                                                                             
+        # Load the web page
+        driver.get(url)
 
-driver.find_element(By.TAG_NAME, "body").screenshot("./assets/images/screenshot.png")
+		# IMPORTANT: Wait 3 second between each URL request to not overwhelm the server
+        sleep(3)
+
+		# Define a lambda function that returns the value of a JavaScript expression
+        S = lambda X: driver.execute_script("return document.body.parentNode.scroll"+X)
+
+		# Set the size of the browser window to the dimensions of the webpage
+        driver.set_window_size(S("Width"), S("Height"))
+
+		# Take and save screenshot
+        name = str(row[1])
+        driver.find_element(By.TAG_NAME, "body").screenshot(f"./assets/images/{name}.png".format(name))
 
 driver.quit()
 

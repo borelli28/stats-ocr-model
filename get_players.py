@@ -50,8 +50,6 @@ for i in hrefs:
 	obj = [name, id, i]
 	data.append(obj)
 
-
-
 # Write data to CSV
 with open("players.csv", "w", newline="") as csvfile:
   # Create a CSV writer object

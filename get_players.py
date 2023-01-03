@@ -7,6 +7,7 @@ import re
 import csv
 
 
+# Create a ChromeOptions object and set the headless parameter to True
 options = webdriver.ChromeOptions()
 options.headless = True
 
@@ -15,17 +16,19 @@ driver = webdriver.Chrome(options=options, executable_path="/chromedriver_mac64/
 
 # Get URL parameter passed when file is executed
 arg = sys.argv[1]
-print(f"Parameter passed {arg}".format(arg))
+print(f"Parameter passed: {arg}".format(arg))
 
 # Load the web page
-driver.get(f"https://www.{arg}".format(arg))
+driver.get(arg)
 
 sleep(1)
 
+# Define a lambda function that returns the value of a JavaScript expression
 S = lambda X: driver.execute_script("return document.body.parentNode.scroll"+X)
-driver.set_window_size(S("Width"),S("Height")) # May need manual adjustment
+# Set the size of the browser window to the dimensions of the webpage
+driver.set_window_size(S("Width"),S("Height"))
 
-# Extract href url and the player id
+# Extract href values of all players <a> in the web page
 hrefs = []
 elements = driver.find_elements(By.CLASS_NAME, "p-related-links__link")
 for i in elements:

@@ -1,6 +1,5 @@
 from PIL import Image, ImageEnhance, ImageFilter
 import pytesseract
-import csv
 
 
 # Load image

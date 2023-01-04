@@ -1,24 +1,41 @@
 from PIL import Image, ImageEnhance, ImageFilter
-import pytesseract
+import csv
 
 
-# Load image
-image = Image.open("./assets/label-images/aaron-judge.png")
+# Open the file for reading
+with open('players.csv', 'r') as csvfile:
+    # Create a CSV reader object
+    reader = csv.reader(csvfile)
+
+    # Skip the first row (column names)
+    next(reader)
+
+    # Read the rows of the file
+    for row in reader:
+        # Get player name from players.csv
+        name = str(row[0])
+
+        print(f"Working with {name} image...")
+
+		# Load image
+        image = Image.open(f"./assets/label-images/{name}.png".format(name))
+
+		# Convert the image to grayscale
+        image = image.convert('L')
+		# image.save('image_grayscale.png')
+
+		# Crop the image
+		# 						(left, upper, right, lower)
+        cropped_image = image.crop((0, 350, 2000, 2000))
+        cropped_image.save(f"./assets/label-images/{name}.png".format(name))
+
+        print(f"Done with {name} image")
 
 
-# Convert the image to grayscale
-image = image.convert('L')
-# image.save('image_grayscale.jpg')
-
-# Crop the image
-# 						(left, upper, right, lower)
-cropped_image = image.crop((0, 350, 2000, 2000))
-cropped_image.save('cropped_image.jpg')
-
-# Image to string
-print(pytesseract.image_to_string(Image.open("cropped_image.jpg")))
 
 
+
+# # Increase contrast of image
 # # Create an ImageEnhancer object
 # enhancer = ImageEnhance.Contrast(cropped_image)
 # # Adjust the contrast

@@ -20,13 +20,18 @@ with open("./assets/annotations/2_coco_imglab.json", "r") as f:
     annotations = json.load(f)
     # print(annotations)
 
+# Create a mapping from category id to category name
+categories_dict = {}
+for category in annotations["categories"]:
+    categories_dict[category["id"]] = category["name"]
+
+# Extract the labels from the annotations
 labels = []
 for annotation in annotations["annotations"]:
-    if "label" in annotation:
-        print("Label in annotation")
-        labels.append(annotation["label"])
-    else:
-    	raise ValueError("No labels in annotations")
+    category_id = annotation["category_id"]
+    if category_id in categories_dict:
+        label = categories_dict[category_id]
+        labels.append(label)
 
 
 # Stack the pixel arrays together
@@ -35,8 +40,12 @@ X = np.vstack((pixels_one, pixels_two))
 X = X.reshape(-1, pixels_one.size)
 y = labels
 
+print("X & y size:")
+print(len(X))
+print(len(labels))
+
 # Split the data into training and test sets
-X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(X, y, test_size=1, random_state=42)
 
 # Choose a classification algorithm and instantiate a model object
 model = sklearn.linear_model.LogisticRegression(max_iter=1000)

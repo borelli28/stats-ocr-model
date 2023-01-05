@@ -1,16 +1,29 @@
 from PIL import Image
-import json
 import numpy as np
 import pytesseract
+import os
 
 
-# Open the image
-image = Image.open("./assets/labeled-images/a-j-alexy.png")
+# Path to the images folder
+image_folder = "./assets/labeled-images"
 
-
-# Reads the text in the image
-text = pytesseract.image_to_string(image)
-print(text)
+# Iterate over the images in the folder
+for file in os.listdir(image_folder):
+    # Ignore hidden files
+    if file.startswith("."):
+        continue
+    
+    # Construct the full path to the image file
+    file_path = os.path.join(image_folder, file)
+    
+    # Open the image
+    image = Image.open(file_path)
+    
+    # Read the text in the image
+    text = pytesseract.image_to_string(image)
+    
+    # Print the text
+    print(text)
 
 
 # pytesseract.pytesseract.tesseract_cmd = '/path/to/tesseract'

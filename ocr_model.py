@@ -43,7 +43,6 @@ def evaluate_accuracy(predictions, labels):
     return accuracy
 
 def extract_data():
-
     # Path to the annotations folder
     annotation_folder = "./assets/annotations"
 
@@ -138,6 +137,7 @@ def train_model(X, y):
 
     print(f"Accuracy: {accuracy:.2f}")
 
+# Convert extract_data from tuple to two variables
 X, y = extract_data()
 train_model(X, y)
 

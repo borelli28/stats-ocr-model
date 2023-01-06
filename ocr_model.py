@@ -7,17 +7,19 @@ import os
 
 # Define a function to extract features from the images
 def extract_features(image):
+    print("Extracting features...")
     # Convert the image to a NumPy array with a consistent shape
     image_array = np.array(image, dtype=np.float32)
     image_array = image_array.reshape((1,) + image_array.shape)
     
-    # Extract the features from the image
     features = np.array(image_array).flatten()
+    features = features.reshape(1, 40000)  # reshape the features array to have 40000 features
     return features
 
 
 # Define a function to extract labels from the annotations
 def extract_labels(annotation):
+    print("Extracting labels...")
     labels = []
     
     # Iterate over the objects in the annotation
@@ -31,6 +33,7 @@ def extract_labels(annotation):
 
 # Define a function to evaluate the accuracy of the model
 def evaluate_accuracy(predictions, labels):
+    print("Evaluating accuracy...")
     # Calculate the number of correct predictions
     correct_predictions = sum(predictions == labels)
     
@@ -43,6 +46,7 @@ def evaluate_accuracy(predictions, labels):
     return accuracy
 
 def extract_data():
+    print("Extracting data from training data...")
     # Path to the annotations folder
     annotation_folder = "./assets/annotations"
 
@@ -111,8 +115,8 @@ def extract_data():
 
     return X, y
 
-
 def train_model(X, y):
+    print("Training model...")
     # Convert the lists to numpy arrays
     X = np.array(X, dtype=np.float32)
     y = np.array(y)
@@ -137,8 +141,13 @@ def train_model(X, y):
 
     print(f"Accuracy: {accuracy:.2f}")
 
-# Convert extract_data from tuple to two variables
-X, y = extract_data()
-train_model(X, y)
+def run():
+    # Convert extract_data from tuple to two variables
+    X, y = extract_data()
+    train_model(X, y)
+
+
+run()
+
 
 

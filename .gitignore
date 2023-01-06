@@ -9,9 +9,7 @@ venv.bak/
 
 
 todo.txt
-
 assets/
 /images
+train-data/
 
-
-imglab.nimn

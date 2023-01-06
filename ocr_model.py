@@ -12,8 +12,8 @@ def extract_features(image):
     image_array = np.array(image, dtype=np.float32)
     image_array = image_array.reshape((1,) + image_array.shape)
     
-    # Extract the features from the image
     features = np.array(image_array).flatten()
+    features = features.reshape(1, 40000)  # reshape the features array to have 40000 features
     return features
 
 
@@ -148,5 +148,3 @@ def run():
     train_model(X, y)
 
 run()
-
-

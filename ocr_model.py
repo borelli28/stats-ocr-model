@@ -125,13 +125,14 @@ def train_model(X, y):
     X = X.reshape(X.shape[0], -1)
 
     # Split the data into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
 
     # Create an SVM classifier
     clf = SVC()
 
     # Train the classifier on the training data
     clf.fit(X_train, y_train)
+
 
     # Use the classifier to make predictions on the test data
     predictions = clf.predict(X_test)
@@ -141,19 +142,11 @@ def train_model(X, y):
 
     print(f"Accuracy: {accuracy:.2f}")
 
-
-    # Feed the trained model an image to see his prediction
-    # Load the image
-    image = Image.open("./assets/labeled-images/jazz-chisholm-jr.png")
-
-    # Extract features from the image
-    features = extract_features(image)
-
-    # Use the model to make a prediction
-    prediction = clf.predict(features)
-
-    # Print the prediction
-    print(prediction)
+    print("\n*Test*")
+    print(y_test)
+    print("--------------------------------------------------")
+    print(predictions)
+    print("*Prediction*\n")
 
 
 def run():

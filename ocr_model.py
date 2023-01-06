@@ -13,7 +13,7 @@ def extract_features(image):
     image_array = image_array.reshape((1,) + image_array.shape)
     
     features = np.array(image_array).flatten()
-    features = features.reshape(1, 40000)  # reshape the features array to have 40000 features
+
     return features
 
 
@@ -140,6 +140,21 @@ def train_model(X, y):
     accuracy = evaluate_accuracy(predictions, y_test)
 
     print(f"Accuracy: {accuracy:.2f}")
+
+
+    # Feed the trained model an image to see his prediction
+    # Load the image
+    image = Image.open("./assets/labeled-images/jazz-chisholm-jr.png")
+
+    # Extract features from the image
+    features = extract_features(image)
+
+    # Use the model to make a prediction
+    prediction = clf.predict(features)
+
+    # Print the prediction
+    print(prediction)
+
 
 def run():
     # Convert extract_data from tuple to two variables

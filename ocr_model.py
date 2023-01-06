@@ -142,8 +142,11 @@ def train_model(X, y):
 
     print(f"Accuracy: {accuracy:.2f}")
 
-# Convert extract_data from tuple to two variables
-X, y = extract_data()
-train_model(X, y)
+def run():
+    # Convert extract_data from tuple to two variables
+    X, y = extract_data()
+    train_model(X, y)
+
+run()
 
 

@@ -133,3 +133,5 @@ predictions = clf.predict(X_test)
 accuracy = evaluate_accuracy(predictions, y_test)
 
 print(f"Accuracy: {accuracy:.2f}")
+
+

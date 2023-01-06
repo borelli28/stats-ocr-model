@@ -13,7 +13,7 @@ def extract_features(image):
     image_array = image_array.reshape((1,) + image_array.shape)
     
     features = np.array(image_array).flatten()
-    features = features.reshape(1, 40000)  # reshape the features array to have 40000 features
+
     return features
 
 
@@ -125,13 +125,14 @@ def train_model(X, y):
     X = X.reshape(X.shape[0], -1)
 
     # Split the data into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
 
     # Create an SVM classifier
     clf = SVC()
 
     # Train the classifier on the training data
     clf.fit(X_train, y_train)
+
 
     # Use the classifier to make predictions on the test data
     predictions = clf.predict(X_test)
@@ -140,6 +141,13 @@ def train_model(X, y):
     accuracy = evaluate_accuracy(predictions, y_test)
 
     print(f"Accuracy: {accuracy:.2f}")
+
+    print("\n*Test*")
+    print(y_test)
+    print("--------------------------------------------------")
+    print(predictions)
+    print("*Prediction*\n")
+
 
 def run():
     # Convert extract_data from tuple to two variables

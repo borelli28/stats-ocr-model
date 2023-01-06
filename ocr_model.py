@@ -115,7 +115,6 @@ def extract_data():
 
     return X, y
 
-
 def train_model(X, y):
     print("Training model...")
     # Convert the lists to numpy arrays
@@ -147,4 +146,8 @@ def run():
     X, y = extract_data()
     train_model(X, y)
 
+
 run()
+
+
+

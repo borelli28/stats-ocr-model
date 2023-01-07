@@ -148,9 +148,15 @@ def train_model(X, y):
     print(predictions)
     print("*Prediction*\n")
 
+    # Prints count of labels and features
+    len_y = len(y)
+    print(f"y(labels) length: {len_y}".format(len_y))
+    len_x = len(X)
+    print(f"X(features) length: {len_x}".format(len_x))
+
 
 def run():
-    # Convert extract_data from tuple to two variables
+    # Convert extract_data from tuple to variables
     X, y = extract_data()
     train_model(X, y)
 

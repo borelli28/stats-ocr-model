@@ -150,7 +150,7 @@ def train_model(X, y):
 
 
 def run():
-    # Convert extract_data from tuple to two variables
+    # Convert extract_data from tuple to variables
     X, y = extract_data()
     train_model(X, y)
 

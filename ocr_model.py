@@ -142,6 +142,8 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
     plt.show()
 
 
+# Get the most incorrectly labeled characters in the prediction
+# num_labels decide how many the function will return
 def get_top_incorrect_predictions(predictions, labels, num_labels=3):
     # Stores the counts of incorrect predictions for each label
     incorrect_counts = {}
@@ -156,7 +158,7 @@ def get_top_incorrect_predictions(predictions, labels, num_labels=3):
             else:
                 incorrect_counts[label] = 1
 
-    # Get the num_labels labels with the highest number of incorrect predictions
+    # The num_labels with the highest number of incorrect predictions
     top_incorrect_labels = nlargest(num_labels, incorrect_counts, key=incorrect_counts.get)
 
     return top_incorrect_labels

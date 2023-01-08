@@ -151,7 +151,7 @@ def train_model(X, y):
     X = X.reshape(X.shape[0], -1)
 
     # Split the data into training and test sets
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.1)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
     # Create an SVM classifier
     clf = SVC()

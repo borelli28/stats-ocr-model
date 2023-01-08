@@ -1,7 +1,6 @@
 import sys
 from time import sleep
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import re
 import csv
@@ -33,8 +32,8 @@ hrefs = []
 elements = driver.find_elements(By.CLASS_NAME, "p-related-links__link")
 for i in elements:
 	element = i.get_attribute("href")
-	print(f"element: {element}".format(element))
-	hrefs.append(element)
+  print(f"element: {element}".format(element))
+  hrefs.append(element)
 
 data = []
 # Strip strings into Name, ID & URL

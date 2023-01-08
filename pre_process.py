@@ -1,4 +1,4 @@
-from PIL import Image, ImageEnhance, ImageFilter
+from PIL import Image
 import csv
 
 
@@ -17,7 +17,7 @@ with open('players.csv', 'r') as csvfile:
 
         print(f"Working with {name} image...")
 
-		# Load image
+        # Load image
         image = Image.open(f"./assets/label-images/{name}.png".format(name))
 
 		# Convert the image to grayscale
@@ -30,17 +30,3 @@ with open('players.csv', 'r') as csvfile:
         cropped_image.save(f"./assets/label-images/{name}.png".format(name))
 
         print(f"Done with {name} image")
-
-
-
-
-
-# # Increase contrast of image
-# # Create an ImageEnhancer object
-# enhancer = ImageEnhance.Contrast(cropped_image)
-# # Adjust the contrast
-# cropped_image = enhancer.enhance(5)
-# cropped_image.save('image_enhanced.jpg')
-
-# print(pytesseract.image_to_string(Image.open("image_enhanced.jpg")))
-

@@ -197,6 +197,12 @@ def train_model(X, y):
     len_x = len(X)
     print(f"X(features) length: {len_x}".format(len_x))
 
+    # Count the number of incorrect predictions
+    incorrect_counts = count_incorrect_predictions(predictions, y_test)
+    # Print the counts of incorrect predictions for each label
+    for label, count in incorrect_counts.items():
+        print(f"Incorrect predictions for label {label}: {count}")
+
     # Plot the loss for different values of C
     # plot_loss(X_train, y_train, X_test, y_test, [0.01, 0.1, 1, 10, 100])
     """

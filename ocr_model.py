@@ -5,7 +5,8 @@ from sklearn.svm import SVC
 from PIL import Image
 import os
 
-# Define a function to extract features from the images
+
+# Extract features from the images
 def extract_features(image):
     print("Extracting features...")
     # Convert the image to a NumPy array with a consistent shape
@@ -45,6 +46,7 @@ def evaluate_accuracy(predictions, labels):
     
     return accuracy
 
+
 def extract_data():
     print("Extracting data from training data...")
     # Path to the annotations folder
@@ -81,14 +83,8 @@ def extract_data():
         # Open the image
         image = Image.open(image_path)
         
-        # Extract the width and height of the image
-        width = int(tree.find("size/width").text)
-        height = int(tree.find("size/height").text)
-        
         # Iterate over the objects in the annotation
         for obj in tree.findall("object"):
-            # Extract the label (i.e., the text in the image)
-            label = obj.find("name").text
             
             # Extract the bounding box coordinates
             xmin = int(round(float(obj.find("bndbox/xmin").text)))
@@ -109,11 +105,11 @@ def extract_data():
             # Extract features from the image
             features = extract_features(image_array)
 
-
             # Add the features to the list
             X.append(features)
 
     return X, y
+
 
 def train_model(X, y):
     print("Training model...")
@@ -132,7 +128,6 @@ def train_model(X, y):
 
     # Train the classifier on the training data
     clf.fit(X_train, y_train)
-
 
     # Use the classifier to make predictions on the test data
     predictions = clf.predict(X_test)
@@ -162,6 +157,3 @@ def run():
 
 
 run()
-
-
-

@@ -180,7 +180,7 @@ def train_model(X, y):
     print(f"X(features) length: {len_x}".format(len_x))
 
     # Plot the loss for different values of C
-    plot_loss(X_train, y_train, X_test, y_test, [0.01, 0.1, 1, 10, 100])
+    # plot_loss(X_train, y_train, X_test, y_test, [0.01, 0.1, 1, 10, 100])
     """
     Training loss is a measure of how well the model is able to fit
     the training data.

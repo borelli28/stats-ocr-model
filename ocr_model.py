@@ -141,6 +141,24 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
     plt.show()
 
 
+def count_incorrect_predictions(predictions, labels):
+    # Store the counts of incorrect predictions for each label
+    incorrect_counts = {}
+
+    # Iterate over the predicted labels and true labels
+    for prediction, label in zip(predictions, labels):
+        # If the prediction is incorrect
+        if prediction != label:
+            # Increment the count of incorrect predictions for this label
+            if label in incorrect_counts:
+                incorrect_counts[label] += 1
+            else:
+                incorrect_counts[label] = 1
+
+    # Return the dictionary of incorrect counts
+    return incorrect_counts
+
+
 def train_model(X, y):
     print("Training model...")
     # Convert the lists to numpy arrays

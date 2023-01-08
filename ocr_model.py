@@ -5,6 +5,7 @@ from sklearn.svm import SVC
 from PIL import Image
 import os
 import matplotlib.pyplot as plt
+from heapq import nlargest
 
 
 # Extract features from the images
@@ -141,8 +142,8 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
     plt.show()
 
 
-def count_incorrect_predictions(predictions, labels):
-    # Store the counts of incorrect predictions for each label
+def get_top_incorrect_predictions(predictions, labels, num_labels=3):
+    # Stores the counts of incorrect predictions for each label
     incorrect_counts = {}
 
     # Iterate over the predicted labels and true labels
@@ -155,8 +156,10 @@ def count_incorrect_predictions(predictions, labels):
             else:
                 incorrect_counts[label] = 1
 
-    # Return the dictionary of incorrect counts
-    return incorrect_counts
+    # Get the num_labels labels with the highest number of incorrect predictions
+    top_incorrect_labels = nlargest(num_labels, incorrect_counts, key=incorrect_counts.get)
+
+    return top_incorrect_labels
 
 
 def train_model(X, y):
@@ -197,11 +200,11 @@ def train_model(X, y):
     len_x = len(X)
     print(f"X(features) length: {len_x}".format(len_x))
 
-    # Count the number of incorrect predictions
-    incorrect_counts = count_incorrect_predictions(predictions, y_test)
-    # Print the counts of incorrect predictions for each label
-    for label, count in incorrect_counts.items():
-        print(f"Incorrect predictions for label {label}: {count}")
+    # Get the three labels with the highest number of incorrect predictions
+    top_incorrect_labels = get_top_incorrect_predictions(predictions, y_test)
+
+    # Print the top incorrect labels
+    print(f"Top incorrect labels: {top_incorrect_labels}")
 
     # Plot the loss for different values of C
     # plot_loss(X_train, y_train, X_test, y_test, [0.01, 0.1, 1, 10, 100])

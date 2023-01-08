@@ -10,7 +10,7 @@ from heapq import nlargest
 
 # Extract features from the images
 def extract_features(image):
-    print("Extracting features...")
+    # print("Extracting features...")
     # Convert the image to a NumPy array with a consistent shape
     image_array = np.array(image, dtype=np.float32)
     image_array = image_array.reshape((1,) + image_array.shape)
@@ -22,7 +22,7 @@ def extract_features(image):
 
 # Define a function to extract labels from the annotations
 def extract_labels(annotation):
-    print("Extracting labels...")
+    # print("Extracting labels...")
     labels = []
     
     # Iterate over the objects in the annotation

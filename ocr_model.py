@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 from PIL import Image
 import os
+import matplotlib.pyplot as plt
 
 
 # Extract features from the images
@@ -111,6 +112,35 @@ def extract_data():
     return X, y
 
 
+# Plot the training and validation loss over time
+def plot_loss(X_train, y_train, X_val, y_val, C_values):
+    # Create lists to store the training and validation loss
+    train_loss = []
+    val_loss = []
+
+    # Train the model with different values of the regularization parameter C
+    for C in C_values:
+        # Create an SVM model with the given value of C
+        svm = SVC(C=C, kernel='linear')
+
+        # Train the model on the training data
+        svm.fit(X_train, y_train)
+
+        # Calculate the training and validation loss
+        train_loss.append(svm.score(X_train, y_train))
+        val_loss.append(svm.score(X_val, y_val))
+
+    # Plot the training and validation loss
+    plt.plot(C_values, train_loss, 'bo', label='Training loss')
+    plt.plot(C_values, val_loss, 'b', label='Validation loss')
+    plt.title('Training and validation loss')
+    plt.xlabel('Regularization parameter C')
+    plt.ylabel('Loss')
+    plt.legend()
+
+    plt.show()
+
+
 def train_model(X, y):
     print("Training model...")
     # Convert the lists to numpy arrays
@@ -148,6 +178,20 @@ def train_model(X, y):
     print(f"y(labels) length: {len_y}".format(len_y))
     len_x = len(X)
     print(f"X(features) length: {len_x}".format(len_x))
+
+    # Plot the loss for different values of C
+    plot_loss(X_train, y_train, X_test, y_test, [0.01, 0.1, 1, 10, 100])
+    """
+    Training loss is a measure of how well the model is able to fit
+    the training data.
+    It is calculated as the average of the errors made by the model 
+    on the training data.
+
+    Validation loss is a measure of how well the model is able to 
+    generalize to new, unseen data.
+    It is calculated as the average of the errors made 
+    by the model on the validation data.
+    """
 
 
 def run():

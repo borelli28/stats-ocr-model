@@ -4,7 +4,7 @@ This will be a OCR(Optical Character Recognition) ML model to extract statistics
 
 ## Model accuracy
 
-Current average model accuracy in test data: **40.0%**
+Current average model accuracy in test data: **50.0%**
 
 ## Usage
 

@@ -42,8 +42,8 @@ Annotations file format: `Pascal VOC XML`
 Annotations should include categories and labels
 
 *Categories*:
-- Numbers: `numbers`
-- Words & Letters: `words`
+- Numbers: `number`
+- Words & Letters: `word`
 - Characters like this; `-`, `.`, `/`: `symbol`
 
 *Labels*:

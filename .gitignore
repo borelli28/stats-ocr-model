@@ -14,3 +14,7 @@ assets/
 train-data/
 
 __pycache__
+
+
+# Saved model files
+/models

@@ -6,6 +6,7 @@ from PIL import Image
 import os
 import matplotlib.pyplot as plt
 from heapq import nlargest
+import pickle
 
 
 # Extract features from the images
@@ -222,11 +223,16 @@ def train_model(X, y):
     by the model on the validation data.
     """
 
+    return clf
+
 
 def run():
     # Convert extract_data from tuple to variables
     X, y = extract_data()
-    train_model(X, y)
+    model = train_model(X, y)
+    # Save the trained model to a file
+    with open("./models/svm_model.pkl", "wb") as f:
+        pickle.dump(model, f)
 
 
 run()

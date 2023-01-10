@@ -231,7 +231,7 @@ def run():
     X, y = extract_data()
     model = train_model(X, y)
     # Save the trained model to a file
-    with open("svm_model.pkl", "wb") as f:
+    with open("./models/svm_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
 

@@ -4,7 +4,7 @@ This will be a OCR(Optical Character Recognition) ML model to extract statistics
 
 ## Model accuracy
 
-Current average model accuracy in test data: **50.0%**
+Current average model accuracy in test data: **60.0%**
 
 ## Usage
 
@@ -47,7 +47,7 @@ Annotations should include categories and labels
 - Characters like this; `-`, `.`, `/`: `symbol`
 
 *Labels*:
-- Values(`Judge`, `2`, `1994`, etc.)
+- Values(`HR`, `2`, `Season`, etc.)
 
 Annotations are saved in `stats-ocr-model/assets/annotations` directory
 

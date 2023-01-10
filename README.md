@@ -47,7 +47,7 @@ Annotations should include categories and labels
 - Characters like this; `-`, `.`, `/`: `symbol`
 
 *Labels*:
-- Values(`Judge`, `2`, `1994`, etc.)
+- Values(`HR`, `2`, `Season`, etc.)
 
 Annotations are saved in `stats-ocr-model/assets/annotations` directory
 

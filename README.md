@@ -32,7 +32,27 @@ python3 ocr_model.py
 ```
 
 ## ocr_model.py Explained
+
 "This code appears to be implementing an OCR model using the SVM (support vector machine) algorithm. The model is trained to recognize text in images by extracting features from the images and labels from the annotations in a training dataset, then using these to train an SVM model. The model can then be used to make predictions on new images. The features of the images are extracted by cropping and resizing the images, then flattening the resulting image arrays and the labels are extracted from the names of the objects in the annotations. The model is evaluated by comparing the predictions made by the model to the ground truth labels and calculating the accuracy as a percentage." - ChatGPT
+
+## Training the model with your data
+
+Annotations file format: `Pascal VOC XML`
+
+Annotations should include categories and labels
+*Categories*:
+- Numbers: `numbers`
+- Words & Letters: `words`
+- Characters like this; `-`, `.`, `/`: `symbol`
+*Labels*:
+- Values(`Judge`, `2`, `1994`, etc.)
+
+Annotations are saved in `stats-ocr-model/assets/annotations` directory
+
+Labeled images are saved in `stats-ocr-model/assets/labeled-images` directory
+
+Image labeling software: https://github.com/NaturalIntelligence/imglab
+Installation guide: https://github.com/NaturalIntelligence/imglab/blob/master/docs/guide.md/#offline-installation
 
 ## License
 

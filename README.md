@@ -40,10 +40,12 @@ python3 ocr_model.py
 Annotations file format: `Pascal VOC XML`
 
 Annotations should include categories and labels
+
 *Categories*:
 - Numbers: `numbers`
 - Words & Letters: `words`
 - Characters like this; `-`, `.`, `/`: `symbol`
+
 *Labels*:
 - Values(`Judge`, `2`, `1994`, etc.)
 

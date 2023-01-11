@@ -6,6 +6,7 @@ import xml.etree.ElementTree as ET
 from torch.nn import functional as F
 from torchvision import transforms
 import os
+from PIL import Image
 
 
 class OCRDataset(Dataset):
@@ -13,16 +14,22 @@ class OCRDataset(Dataset):
         self.annotations = self.parse_annotations(annotations_path)
         self.transforms = transforms
     
-    def parse_annotations(self, annotations_path):
-        annotations = []
-        with open(annotations_path, 'r') as f:
-            for line in f:
-                parts = line.strip().split(',')
-                annotations.append({
-                    'image_path': parts[0],
-                    'label': parts[1]
-                })
-        return annotations
+    def parse_annotations(self, xml_path):
+
+        labels = []
+        for filename in os.listdir(xml_path):
+            if filename.endswith(".xml"):
+                file_path = os.path.join(xml_path, filename)
+                tree = ET.parse(file_path)
+                root = tree.getroot()
+                for obj in root.findall('object'):
+                    label = obj.find('name').text
+                    xmin = int(float(obj.find('bndbox/xmin').text))
+                    ymin = int(float(obj.find('bndbox/ymin').text))
+                    xmax = int(float(obj.find('bndbox/xmax').text))
+                    ymax = int(float(obj.find('bndbox/ymax').text))
+                    labels.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax})
+        return labels
 
     def __len__(self):
         return len(self.annotations)
@@ -45,23 +52,6 @@ class AttentionOCR(nn.Module):
         self.rnn = nn.GRU(input_size, hidden_size, num_layers=2, bidirectional=True)
         self.attn = nn.Linear(hidden_size * 2, 1)
         self.fc = nn.Linear(hidden_size * 2, num_classes)
-
-    def parse_annotations(self, xml_path):
-
-        labels = []
-        for filename in os.listdir(xml_path):
-            if filename.endswith(".xml"):
-                file_path = os.path.join(xml_path, filename)
-                tree = ET.parse(file_path)
-                root = tree.getroot()
-                for obj in root.findall('object'):
-                    label = obj.find('name').text
-                    xmin = int(float(obj.find('bndbox/xmin').text))
-                    ymin = int(float(obj.find('bndbox/ymin').text))
-                    xmax = int(float(obj.find('bndbox/xmax').text))
-                    ymax = int(float(obj.find('bndbox/ymax').text))
-                    labels.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax})
-        return labels
 
     def create_dataloader(self, annotations_path, batch_size, transforms, shuffle=True):
         

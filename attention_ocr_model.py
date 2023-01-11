@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader
+import torch.optim as optim
 
 
 class AttentionOCR(nn.Module):
@@ -28,6 +30,24 @@ class AttentionOCR(nn.Module):
         
         return x
 
+    def create_dataloader(dataset, batch_size, shuffle=True):
+        return DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+
+
+    def train_attention_ocr(model, dataloader, criterion, optimizer, num_epochs):
+        model.train()
+        for epoch in range(num_epochs):
+            for i, (inputs, labels) in enumerate(dataloader):
+                optimizer.zero_grad()
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                loss.backward()
+                optimizer.step()
+                
+                if (i+1) % 100 == 0:
+                    print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}' 
+                           .format(epoch+1, num_epochs, i+1, len(train_dataset)//batch_size, loss.item()))
+
 
 # Instantiate the model
 input_size = 256
@@ -35,3 +55,13 @@ hidden_size = 128
 num_classes = 3000
 model = AttentionOCR(input_size, hidden_size, num_classes)
 print(model)
+
+batch_size = 64
+train_dataset = "./assets/"
+
+train_dataloader = model.create_dataloader(train_dataset, batch_size)
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters())
+num_epochs = 20
+
+model.train_attention_ocr(model, train_dataloader, criterion, optimizer, num_epochs)

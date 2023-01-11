@@ -1,10 +1,10 @@
 # stats-ocr-model
 
-This will be a OCR(Optical Character Recognition) ML model to extract statistics from the mlb.com website. It will work by taking screenshots of each player stats page and then feeding those images to the model in order to extract the statistics of each player into a CSV file.
+This will be a OCR(Optical Character Recognition) model to extract statistics from the mlb.com website. It will work by taking screenshots of each player stats page and then feeding those images to the model in order to extract the statistics of each player into a CSV file.
 
 ## Model accuracy
 
-Current average model accuracy in test data: **60.0%**
+SVM model: Current average accuracy in test data: **60.0%**
 
 ## Usage
 
@@ -28,12 +28,8 @@ python3 pre_process.py
 
 Trains SVM OCR model with annotations and labeled images in ./assets directory
 ```bash
-python3 ocr_model.py
+python3 svm_ocr_model.py
 ```
-
-## ocr_model.py Explained
-
-"This code appears to be implementing an OCR model using the SVM (support vector machine) algorithm. The model is trained to recognize text in images by extracting features from the images and labels from the annotations in a training dataset, then using these to train an SVM model. The model can then be used to make predictions on new images. The features of the images are extracted by cropping and resizing the images, then flattening the resulting image arrays and the labels are extracted from the names of the objects in the annotations. The model is evaluated by comparing the predictions made by the model to the ground truth labels and calculating the accuracy as a percentage." - ChatGPT
 
 ## Training the model with your data
 

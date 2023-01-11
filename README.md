@@ -1,10 +1,10 @@
 # stats-ocr-model
 
-This will be a OCR(Optical Character Recognition) ML model to extract statistics from the mlb.com website. It will work by taking screenshots of each player stats page and then feeding those images to the model in order to extract the statistics of each player into a CSV file.
+This will be a OCR(Optical Character Recognition) model to extract statistics from the mlb.com website. It will work by taking screenshots of each player stats page and then feeding those images to the model in order to extract the statistics of each player into a CSV file.
 
 ## Model accuracy
 
-Current average model accuracy in test data: **60.0%**
+SVM model: Current average accuracy in test data: **60.0%**
 
 ## Usage
 

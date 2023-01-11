@@ -42,14 +42,21 @@ class AttentionOCR(nn.Module):
         return dataloader
 
     def forward(self, x):
-        
+        # Pass the image through the convolutional layers
         x = self.conv(x)
+        
+        # Apply a RNN to the features
         x, _ = self.rnn(x)
+        
+        # Apply the attention mechanism
         attn_weights = self.attn(x)
         attn_weights = attn_weights.squeeze(2)
         attn_weights = F.softmax(attn_weights, dim=1)
         x = x * attn_weights.unsqueeze(2)
+        
+        # Pass the features through the fully connected layer
         x = self.fc(x)
+        
         return x
 
     def train_attention_ocr(self, model, dataloader, criterion, optimizer, num_epochs):

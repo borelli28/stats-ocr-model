@@ -15,30 +15,37 @@ class OCRDataset(Dataset):
         self.transforms = transforms
     
     def parse_annotations(self, xml_path):
-
-        labels = []
+        annotations = []
         for filename in os.listdir(xml_path):
             if filename.endswith(".xml"):
                 file_path = os.path.join(xml_path, filename)
                 tree = ET.parse(file_path)
                 root = tree.getroot()
+                image_path = os.path.join(xml_path, root.find("filename").text)
                 for obj in root.findall('object'):
                     label = obj.find('name').text
                     xmin = int(float(obj.find('bndbox/xmin').text))
                     ymin = int(float(obj.find('bndbox/ymin').text))
                     xmax = int(float(obj.find('bndbox/xmax').text))
                     ymax = int(float(obj.find('bndbox/ymax').text))
-                    labels.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax})
-        return labels
+                    annotations.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax, 'image_path': image_path})
+        return annotations
 
     def __len__(self):
         return len(self.annotations)
 
     def __getitem__(self, idx):
+        # annotation = self.annotations[idx]
+        # label = annotation['label']
+        # print("annotation:")
+        # print(annotation)
+        # print("label:")
+        # print(label)
+
         annotation = self.annotations[idx]
         image = Image.open(annotation['image_path'])
         label = annotation['label']
-        
+
         if self.transforms:
             image = self.transforms(image)
         
@@ -55,8 +62,7 @@ class AttentionOCR(nn.Module):
 
     def create_dataloader(self, annotations_path, batch_size, transforms, shuffle=True):
         
-        annotations = self.parse_annotations(annotations_path)
-        dataset = torch.utils.data.Dataset(annotations, transforms)
+        dataset = OCRDataset(annotations_path, transforms)
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
 
         return dataloader
@@ -103,7 +109,7 @@ model = AttentionOCR(input_size, hidden_size, num_classes)
 print(model)
 
 batch_size = 64
-train_dataset = "./assets/annotations"
+train_dataset = "./assets/cnn-annotations"
 
 transform = transforms.Compose([transforms.RandomHorizontalFlip(),
                                 transforms.RandomRotation(10),

@@ -8,6 +8,36 @@ from torchvision import transforms
 import os
 
 
+class OCRDataset(Dataset):
+    def __init__(self, annotations_path, transforms=None):
+        self.annotations = self.parse_annotations(annotations_path)
+        self.transforms = transforms
+    
+    def parse_annotations(self, annotations_path):
+        annotations = []
+        with open(annotations_path, 'r') as f:
+            for line in f:
+                parts = line.strip().split(',')
+                annotations.append({
+                    'image_path': parts[0],
+                    'label': parts[1]
+                })
+        return annotations
+
+    def __len__(self):
+        return len(self.annotations)
+
+    def __getitem__(self, idx):
+        annotation = self.annotations[idx]
+        image = Image.open(annotation['image_path'])
+        label = annotation['label']
+        
+        if self.transforms:
+            image = self.transforms(image)
+        
+        return image, label
+
+
 class AttentionOCR(nn.Module):
     def __init__(self, input_size, hidden_size, num_classes):
         super(AttentionOCR, self).__init__()

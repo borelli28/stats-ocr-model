@@ -31,23 +31,28 @@ class OCRDataset(Dataset):
                     annotations.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax, 'image_path': image_path})
         return annotations
 
+    def normalize(self, tensor, mean, std):
+        mean = torch.as_tensor(mean, dtype=torch.float32)
+        std = torch.as_tensor(std, dtype=torch.float32)
+        mean = mean.unsqueeze(1).unsqueeze(1)
+        std = std.unsqueeze(1).unsqueeze(1)
+        return tensor.sub_(mean).div_(std)
+
     def __len__(self):
         return len(self.annotations)
 
     def __getitem__(self, idx):
-        # annotation = self.annotations[idx]
-        # label = annotation['label']
-        # print("annotation:")
-        # print(annotation)
-        # print("label:")
-        # print(label)
 
         annotation = self.annotations[idx]
-        image = Image.open(annotation['image_path'])
+        image_path = annotation['image_path']
+        image = Image.open(image_path)
         label = annotation['label']
 
         if self.transforms:
             image = self.transforms(image)
+            mean = (0.485, 0.456, 0.406)
+            std = (0.229, 0.224, 0.225)
+            image = self.normalize(image, mean, std)
         
         return image, label
 

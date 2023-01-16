@@ -21,7 +21,12 @@ class OCRDataset(Dataset):
                 file_path = os.path.join(xml_path, filename)
                 tree = ET.parse(file_path)
                 root = tree.getroot()
-                image_path = os.path.join(xml_path, root.find("filename").text)
+                image_path = os.path.join("./assets/labeled-images", root.find("filename").text)
+
+                print("\nimage path:")
+                print(image_path)
+                print("\n")
+
                 for obj in root.findall('object'):
                     label = obj.find('name').text
                     xmin = int(float(obj.find('bndbox/xmin').text))
@@ -31,12 +36,12 @@ class OCRDataset(Dataset):
                     annotations.append({'label': label, 'xmin': xmin, 'ymin': ymin, 'xmax': xmax, 'ymax': ymax, 'image_path': image_path})
         return annotations
 
-    def normalize(self, tensor, mean, std):
-        mean = torch.as_tensor(mean, dtype=torch.float32)
-        std = torch.as_tensor(std, dtype=torch.float32)
-        mean = mean.unsqueeze(1).unsqueeze(1)
-        std = std.unsqueeze(1).unsqueeze(1)
-        return tensor.sub_(mean).div_(std)
+    # def normalize(self, tensor, mean, std):
+    #     mean = torch.as_tensor(mean, dtype=torch.float32)
+    #     std = torch.as_tensor(std, dtype=torch.float32)
+    #     mean = mean.unsqueeze(1).unsqueeze(1)
+    #     std = std.unsqueeze(1).unsqueeze(1)
+    #     return tensor.sub_(mean).div_(std)
 
     def __len__(self):
         return len(self.annotations)
@@ -53,6 +58,10 @@ class OCRDataset(Dataset):
             mean = (0.485, 0.456, 0.406)
             std = (0.229, 0.224, 0.225)
             image = self.normalize(image, mean, std)
+
+        print("\ninput data:")
+        print(image)
+        print("\n")
         
         return image, label
 
@@ -68,11 +77,29 @@ class AttentionOCR(nn.Module):
     def create_dataloader(self, annotations_path, batch_size, transforms, shuffle=True):
         
         dataset = OCRDataset(annotations_path, transforms)
+
         dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=shuffle)
+
+        print("\annotations_path:")
+        print(annotations_path)
+        print("\n")
+
+        print("\nbatch_size in dataloader:")
+        print(batch_size)
+        print("\n")
+
+        print("\ndataset shape:")
+        sample = dataset[0]
+        print("Sample shape: ", sample[0].shape)
+        print("\n")
 
         return dataloader
 
     def forward(self, x):
+        print("\nforward():")
+        print(x)
+        print("\n")
+
         # Pass the image through the convolutional layers
         x = self.conv(x)
         
@@ -87,6 +114,10 @@ class AttentionOCR(nn.Module):
         
         # Pass the features through the fully connected layer
         x = self.fc(x)
+
+        print("\nforward():")
+        print(x)
+        print("\n")
         
         return x
 
@@ -102,7 +133,7 @@ class AttentionOCR(nn.Module):
                 optimizer.step()
                 
                 if (i+1) % 100 == 0:
-                    print ('Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}' 
+                    print ("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}" 
                            .format(epoch+1, num_epochs, i+1, len(train_dataset)//batch_size, loss.item()))
 
 
@@ -114,7 +145,7 @@ model = AttentionOCR(input_size, hidden_size, num_classes)
 print(model)
 
 batch_size = 64
-train_dataset = "./assets/cnn-annotations"
+train_dataset = "./assets/annotations"
 
 transform = transforms.Compose([transforms.RandomHorizontalFlip(),
                                 transforms.RandomRotation(10),

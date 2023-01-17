@@ -7,39 +7,43 @@ from PIL import Image
 
 
 class CustomDataset(Dataset):
-    def __init__(self, annotations_path, images_path, transforms=None):
-        self.annotations = self.parse_annotations(annotations_path)
-        self.images_path = images_path
-        self.transforms = transforms
-    
-    def parse_annotations(self, xml_path, images_path):
+    def __init__(self, annotations_path, images_path, classes=None):
+        self.classes = classes
+        self.annotations = self.parse_annotations(annotations_path, images_path)
+
+    def parse_annotations(self, annotations_path, images_path):
         annotations = []
-        for filename in os.listdir(xml_path):
+        classes = set()
+        for filename in os.listdir(annotations_path):
             if filename.endswith(".xml"):
-                file_path = os.path.join(xml_path, filename)
+                file_path = os.path.join(annotations_path, filename)
                 tree = ET.parse(file_path)
                 root = tree.getroot()
                 image_name = root.find("filename").text
                 image_path = os.path.join(images_path, image_name)
                 for obj in root.findall("object"):
                     label = obj.find("name").text
+                    classes.add(label)
                     xmin = int(float(obj.find("bndbox/xmin").text))
                     ymin = int(float(obj.find("bndbox/ymin").text))
                     xmax = int(float(obj.find("bndbox/xmax").text))
                     ymax = int(float(obj.find("bndbox/ymax").text))
                     annotations.append({
                         "label": label, "xmin": xmin, "ymin": ymin, "xmax": xmax, "ymax": ymax, "image_path": image_path})
-        return annotations
+        self.classes = list(classes)
+        print("\n")
+        print(self.classes)
+        print(len(self.classes))
+        print("\n")
 
-    def __len__(self):
-        return len(self.annotations)
+        return annotations
 
     def __getitem__(self, idx):
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(self.images_path, image_path))
-        label = annotation["label"]
-        
+        label = self.classes.index(annotation["label"])
+
         return image, label
 
 
@@ -75,15 +79,17 @@ class SimpleOCR(nn.Module):
 
 
 def train(annotations_path, images_path, batch_size, num_epochs):
+    # Initialize CustomDataset class in order to extract the num_classes
+    dataset = CustomDataset(annotations_path, images_path)
+    print(dataset.classes)
+    num_classes = len(dataset.classes)
+
     # Initialize the model
-    model = SimpleOCR(annotations_path, images_path)
+    model = SimpleOCR(num_classes, batch_size)
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters())
-
-    # Create a dataset from the annotations
-    dataset = CustomDataset(annotations_path)
 
     # Create a dataloader
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)

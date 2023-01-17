@@ -10,6 +10,10 @@ class CustomDataset(Dataset):
     def __init__(self, annotations_path, images_path, classes=None):
         self.classes = classes
         self.annotations = self.parse_annotations(annotations_path, images_path)
+        # Dictionary that maps the class(category) label to a unique integer idx
+        # self.class_to_idx = {c: i for i, c in enumerate(classes)}
+        self.images_path = images_path
+        self.annotations_path = annotations_path
 
     def parse_annotations(self, annotations_path, images_path):
         annotations = []
@@ -31,18 +35,23 @@ class CustomDataset(Dataset):
                     annotations.append({
                         "label": label, "xmin": xmin, "ymin": ymin, "xmax": xmax, "ymax": ymax, "image_path": image_path})
         self.classes = list(classes)
-        print("\n")
-        print(self.classes)
-        print(len(self.classes))
-        print("\n")
 
         return annotations
 
     def __getitem__(self, idx):
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
-        image = Image.open(os.path.join(self.images_path, image_path))
+        image = Image.open(os.path.join(image_path))
+
+        # Dictionary that maps the class(category) label to a unique integer idx
+        # class_to_idx = {c: i for i, c in enumerate(classes)}
+        # print("class_to_idx:")
+        # print(class_to_idx)
+
         label = self.classes.index(annotation["label"])
+        # label = self.class_to_idx[annotation["label"]]
+
+        print(label)
 
         return image, label
 
@@ -81,8 +90,11 @@ class SimpleOCR(nn.Module):
 def train(annotations_path, images_path, batch_size, num_epochs):
     # Initialize CustomDataset class in order to extract the num_classes
     dataset = CustomDataset(annotations_path, images_path)
-    print(dataset.classes)
+    print(len(dataset.classes))
     num_classes = len(dataset.classes)
+
+    data = dataset.__getitem__(0)
+    print(data)
 
     # Initialize the model
     model = SimpleOCR(num_classes, batch_size)

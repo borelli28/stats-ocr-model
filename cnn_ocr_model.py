@@ -9,22 +9,23 @@ from PIL import Image
 class CustomDataset(Dataset):
     def __init__(self, annotations_path, images_path, classes=None):
         self.classes = classes
-        self.annotations = self.parse_annotations(annotations_path, images_path)
         # Dictionary that maps the class(category) label to a unique integer idx
         # self.class_to_idx = {c: i for i, c in enumerate(classes)}
         self.images_path = images_path
         self.annotations_path = annotations_path
+        self.annotations = self.parse_annotations()
 
-    def parse_annotations(self, annotations_path, images_path):
+    def parse_annotations(self):
         annotations = []
         classes = set()
-        for filename in os.listdir(annotations_path):
+
+        for filename in os.listdir(self.annotations_path):
             if filename.endswith(".xml"):
-                file_path = os.path.join(annotations_path, filename)
+                file_path = os.path.join(self.annotations_path, filename)
                 tree = ET.parse(file_path)
                 root = tree.getroot()
                 image_name = root.find("filename").text
-                image_path = os.path.join(images_path, image_name)
+                image_path = os.path.join(self.images_path, image_name)
                 for obj in root.findall("object"):
                     label = obj.find("name").text
                     classes.add(label)
@@ -34,6 +35,7 @@ class CustomDataset(Dataset):
                     ymax = int(float(obj.find("bndbox/ymax").text))
                     annotations.append({
                         "label": label, "xmin": xmin, "ymin": ymin, "xmax": xmax, "ymax": ymax, "image_path": image_path})
+        
         self.classes = list(classes)
 
         return annotations
@@ -93,8 +95,19 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     print(len(dataset.classes))
     num_classes = len(dataset.classes)
 
-    data = dataset.__getitem__(0)
-    print(data)
+    dataset_data = dataset.parse_annotations()
+    print("length of data in parse_annotations(): {length}".format(length=str(len(dataset_data))))
+    ''' 
+
+    TODO: Need to write something that uses CustomDataset.__getitem__() in order
+    to get all of images & labels sets in a way that is accepted by the
+    DataLoader()
+
+    Reason: I get this error: "TypeError: object of type 'CustomDataset' has no len()",
+    when I pass the wrong data
+
+    '''
+
 
     # Initialize the model
     model = SimpleOCR(num_classes, batch_size)
@@ -104,7 +117,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     optimizer = optim.Adam(model.parameters())
 
     # Create a dataloader
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    dataloader = DataLoader(dataset_data, batch_size=batch_size, shuffle=True)
 
     # Train the model
     for epoch in range(num_epochs):

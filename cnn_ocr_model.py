@@ -95,16 +95,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     # Initialize CustomDataset class in order to extract the num_classes
     dataset = CustomDataset(annotations_path, images_path)
     num_classes = len(dataset.classes)
-    ''' 
-
-    TODO: Need to write something that uses CustomDataset.__getitem__() in order
-    to get all of images & labels sets in a way that is accepted by the
-    DataLoader()
-
-    Reason: I get this error: "TypeError: object of type 'CustomDataset' has no len()",
-    when I pass the wrong data
-
-    '''
 
     # Initialize the model
     model = SimpleOCR(num_classes, batch_size)

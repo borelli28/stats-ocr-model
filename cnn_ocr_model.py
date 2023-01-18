@@ -40,20 +40,14 @@ class CustomDataset(Dataset):
 
         return annotations
 
+    def __len__(self):
+        return len(self.annotations)
+
     def __getitem__(self, idx):
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(image_path))
-
-        # Dictionary that maps the class(category) label to a unique integer idx
-        # class_to_idx = {c: i for i, c in enumerate(classes)}
-        # print("class_to_idx:")
-        # print(class_to_idx)
-
         label = self.classes.index(annotation["label"])
-        # label = self.class_to_idx[annotation["label"]]
-
-        print(label)
 
         return image, label
 
@@ -97,6 +91,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
     dataset_data = dataset.parse_annotations()
     print("length of data in parse_annotations(): {length}".format(length=str(len(dataset_data))))
+
     ''' 
 
     TODO: Need to write something that uses CustomDataset.__getitem__() in order
@@ -107,7 +102,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     when I pass the wrong data
 
     '''
-
 
     # Initialize the model
     model = SimpleOCR(num_classes, batch_size)

@@ -4,7 +4,14 @@ import torch.optim as optim
 import xml.etree.ElementTree as ET
 import os
 from PIL import Image
+from torchvision import transforms
 
+
+transform = transforms.Compose([
+    transforms.Resize(256),
+    transforms.CenterCrop(224),
+    transforms.ToTensor()
+])
 
 class CustomDataset(Dataset):
     def __init__(self, annotations_path, images_path, classes=None):
@@ -47,6 +54,7 @@ class CustomDataset(Dataset):
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(image_path))
+        image = transform(image)
         label = self.classes.index(annotation["label"])
 
         return image, label
@@ -86,12 +94,7 @@ class SimpleOCR(nn.Module):
 def train(annotations_path, images_path, batch_size, num_epochs):
     # Initialize CustomDataset class in order to extract the num_classes
     dataset = CustomDataset(annotations_path, images_path)
-    print(len(dataset.classes))
     num_classes = len(dataset.classes)
-
-    dataset_data = dataset.parse_annotations()
-    print("length of data in parse_annotations(): {length}".format(length=str(len(dataset_data))))
-
     ''' 
 
     TODO: Need to write something that uses CustomDataset.__getitem__() in order
@@ -111,7 +114,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     optimizer = optim.Adam(model.parameters())
 
     # Create a dataloader
-    dataloader = DataLoader(dataset_data, batch_size=batch_size, shuffle=True)
+    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
     # Train the model
     for epoch in range(num_epochs):

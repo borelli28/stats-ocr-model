@@ -2,7 +2,6 @@ import torch
 from torch import nn
 from torchvision import transforms
 import torch.nn.functional as F
-from torchvision.transforms import ToTensor
 from torch.utils.data import Dataset, DataLoader
 import torch.optim as optim
 import xml.etree.ElementTree as ET
@@ -65,8 +64,8 @@ class CustomDataset(Dataset):
 
 
 # Get cpu or gpu device for training.
-device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
-print(f"Using {device} device")
+# device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
+# print(f"Using {device} device")
 
 
 # Define model
@@ -77,13 +76,18 @@ class CNN(nn.Module):
         self.conv1 = nn.Conv2d(1, 6, 5)
         self.pool = nn.MaxPool2d(2, 2)
         self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
+        self.fc1 = nn.Linear(16 * 409 * 497, 120)
         self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+        self.fc3 = nn.Linear(84, num_classes)
+        print(f"Num of classes: {num_classes}")
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
+        print("\nShape of x after last pool():")
+        print(x.shape)
+        print("\n")
+
         x = torch.flatten(x, 1) # flatten all dimensions except batch
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
@@ -96,7 +100,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     dataset = CustomDataset(annotations_path, images_path)
     num_classes = len(dataset.classes)
 
-    model = CNN(num_classes).to(device)
+    model = CNN(num_classes)
 
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
@@ -154,7 +158,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     test_loss, correct = 0, 0
     with torch.no_grad():
         for X, y in test_dataloader:
-            X, y = X.to(device), y.to(device)
             pred = model(X)
             test_loss += loss_fn(pred, y).item()
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()
@@ -166,7 +169,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
 
 batch_size = 64
-num_epochs = 10
+num_epochs = 1
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)

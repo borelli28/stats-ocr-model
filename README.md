@@ -4,7 +4,9 @@ This will be a OCR(Optical Character Recognition) model to extract statistics fr
 
 ## Model accuracy
 
-SVM model: Current average accuracy in test data: **60.0%**
+- SVM model: Current average accuracy in test data: **60.0%**
+
+- CNN model: Current average accuracy in test data: **03.0%**
 
 ## Usage
 
@@ -29,6 +31,12 @@ python3 pre_process.py
 Trains SVM OCR model with annotations and labeled images in ./assets directory
 ```bash
 python3 svm_ocr_model.py
+```
+
+
+Trains CNN OCR model with annotations and labeled images in ./assets directory
+```bash
+python3 cnn_ocr_model.py
 ```
 
 ## Training the model with your data

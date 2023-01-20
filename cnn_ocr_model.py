@@ -162,7 +162,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
 
 batch_size = 64
-num_epochs = 1
+num_epochs = 10
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)
@@ -170,14 +170,3 @@ model = train(annotations_path, images_path, batch_size, num_epochs)
 # Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")
 print("Saved PyTorch Model State to ./models/cnn_model.pth")
-
-
-
-
-
-
-
-
-
-
-#

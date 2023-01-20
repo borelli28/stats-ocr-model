@@ -112,25 +112,24 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     # Train the model
     for epoch in range(num_epochs):
         print(f"epoch: {epoch}".format(epoch))
-        counter = 0
-        print(len(train_dataloader))
+        counter = 1
+
         for i, (inputs, labels) in enumerate(train_dataloader):
-            print(print(f"counter: {counter}".format(counter)))
+            print(f"counter: {counter}".format(counter))
             
             optimizer.zero_grad()
             outputs = model(inputs)
 
             print("\ninputs:")
-            print(inputs)
+            print(inputs.shape)
             print("labels:")
-            print(labels)
+            print(labels.shape)
             print("\n")
             print("\noutputs:")
-            print(outputs)
+            print(outputs.shape)
             print("\n")
             
             loss = criterion(outputs, labels)
-            loss = torch.autograd.Variable(loss, requires_grad=True)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -171,12 +170,6 @@ model = train(annotations_path, images_path, batch_size, num_epochs)
 # Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")
 print("Saved PyTorch Model State to ./models/cnn_model.pth")
-
-# for t in range(num_epochs):
-#     print(f"Epoch {t+1}\n-------------------------------")
-#     train(train_dataloader, model, loss_fn, optimizer)
-#     # test(test_dataloader, model, loss_fn)
-# print("Done!")
 
 
 

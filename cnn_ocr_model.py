@@ -144,7 +144,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
             counter += 1
 
-    # Compare 
+    # Evaluate the model accuracy based on test data
     size = len(test_dataloader.dataset)
     num_batches = len(test_dataloader)
     model.eval()

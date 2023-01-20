@@ -97,9 +97,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     dataset = CustomDataset(annotations_path, images_path)
     num_classes = len(dataset.classes)
 
-    # Initialize the model
-    model = NeuralNetwork()
-
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters())
@@ -133,6 +130,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
             print("\n")
             
             loss = criterion(outputs, labels)
+            loss = torch.autograd.Variable(loss, requires_grad=True)
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()

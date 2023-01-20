@@ -53,7 +53,7 @@ class CustomDataset(Dataset):
         return len(self.annotations)
 
     def __getitem__(self, idx):
-        print("__getitem__()")
+        # print("__getitem__()")
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(image_path))
@@ -106,12 +106,14 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
     # Create a dataloader
     dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-    print("DataLoader:")
-    print(dataloader)
 
-    # Create data loaders.
-    train_dataloader = DataLoader(dataset, batch_size=batch_size)
-    test_dataloader = DataLoader(dataset, batch_size=batch_size)
+    # Create data loaders
+    train_size = int(0.8 * len(dataset))
+    test_size = len(dataset) - train_size
+    train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
+    test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+
 
     # Train the model
     for epoch in range(num_epochs):
@@ -120,15 +122,10 @@ def train(annotations_path, images_path, batch_size, num_epochs):
         print(len(train_dataloader))
         for i, (inputs, labels) in enumerate(train_dataloader):
             print(print(f"counter: {counter}".format(counter)))
-
-            print("\ninputs:")
-            print(inputs.shape)
-            print("labels:")
-            print(labels.shape)
-            print("\n")
             
             optimizer.zero_grad()
             outputs = model(inputs)
+
             print("\ninputs:")
             print(inputs.shape)
             print("labels:")
@@ -142,7 +139,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
             # loss.backward()
             optimizer.step()
 
-            # Checks if the current step (i+1) is divisible by 10
             # Every 10 steps the progress is printed
             if (i+1) % 10 == 0:
                 print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}" 
@@ -170,12 +166,10 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
 
 batch_size = 64
-num_epochs = 1
+num_epochs = 10
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)
-
-# test()
 
 # Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")

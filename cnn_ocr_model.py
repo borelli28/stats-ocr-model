@@ -64,7 +64,7 @@ class CustomDataset(Dataset):
 
 
 # Define model
-class CNN(nn.Module):
+class CNN_OCR(nn.Module):
     def __init__(self, num_classes):
         super().__init__()
         # nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5)
@@ -92,12 +92,11 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     dataset = CustomDataset(annotations_path, images_path)
     num_classes = len(dataset.classes)
 
-    model = CNN(num_classes)
+    model = CNN_OCR(num_classes)
 
     # Define the loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
-
 
     # criterion = nn.CrossEntropyLoss()
     # optimizer = optim.Adam(model.parameters())
@@ -108,7 +107,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
-
 
     # Train the model
     for epoch in range(num_epochs):

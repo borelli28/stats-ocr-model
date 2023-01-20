@@ -104,9 +104,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters())
 
-    # Create a dataloader
-    dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
-
     # Create data loaders
     train_size = int(0.8 * len(dataset))
     test_size = len(dataset) - train_size
@@ -127,23 +124,25 @@ def train(annotations_path, images_path, batch_size, num_epochs):
             outputs = model(inputs)
 
             print("\ninputs:")
-            print(inputs.shape)
+            print(inputs)
             print("labels:")
-            print(labels.shape)
+            print(labels)
             print("\n")
             print("\noutputs:")
-            print(outputs.shape)
+            print(outputs)
             print("\n")
             
             loss = criterion(outputs, labels)
-            # loss.backward()
+            optimizer.zero_grad()
+            loss.backward()
             optimizer.step()
+
 
             # Every 10 steps the progress is printed
             if (i+1) % 10 == 0:
                 print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}" 
                        .format(
-                        epoch+1, num_epochs, i+1, len(dataloader), loss.item()))
+                        epoch+1, num_epochs, i+1, len(train_dataloader), loss.item()))
 
             counter += 1
 

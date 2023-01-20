@@ -21,6 +21,7 @@ class CustomDataset(Dataset):
         self.annotations_path = annotations_path
         self.annotations = self.parse_annotations()
 
+    # Returns annotations in a format that the model prefers
     def parse_annotations(self):
         print("parse_annotations()")
         annotations = []

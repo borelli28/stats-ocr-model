@@ -3,7 +3,6 @@ from torch import nn
 from torchvision import transforms
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
-import torch.optim as optim
 import xml.etree.ElementTree as ET
 import os
 from PIL import Image

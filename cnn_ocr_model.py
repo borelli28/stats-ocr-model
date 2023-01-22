@@ -3,6 +3,7 @@ from torch import nn
 from torchvision import transforms
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
+import torch.optim as optim
 import xml.etree.ElementTree as ET
 import os
 from PIL import Image
@@ -95,10 +96,8 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
     # Define the loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
-
-    # criterion = nn.CrossEntropyLoss()
-    # optimizer = optim.Adam(model.parameters())
+    learning_rate = 0.01
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
 
     # Create data loaders
     train_size = int(0.8 * len(dataset))

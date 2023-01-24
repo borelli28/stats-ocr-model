@@ -3,7 +3,6 @@ from torch import nn
 from torchvision import transforms
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
-import torch.optim as optim
 import xml.etree.ElementTree as ET
 import os
 from PIL import Image
@@ -96,8 +95,10 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
     # Define the loss function and optimizer
     loss_fn = nn.CrossEntropyLoss()
-    learning_rate = 0.01
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+
+    # criterion = nn.CrossEntropyLoss()
+    # optimizer = optim.Adam(model.parameters())
 
     # Create data loaders
     train_size = int(0.8 * len(dataset))
@@ -166,3 +167,4 @@ model = train(annotations_path, images_path, batch_size, num_epochs)
 # Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")
 print("Saved PyTorch Model State to ./models/cnn_model.pth")
+

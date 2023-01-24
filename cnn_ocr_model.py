@@ -8,11 +8,6 @@ import os
 from PIL import Image
 
 
-transform = transforms.Compose([
-    transforms.ToTensor()
-])
-
-
 class CustomDataset(Dataset):
     def __init__(self, annotations_path, images_path, classes=None):
         self.classes = classes
@@ -22,7 +17,6 @@ class CustomDataset(Dataset):
 
     # Returns annotations in a format that the model prefers
     def parse_annotations(self):
-        print("parse_annotations()")
         annotations = []
         classes = set()
 
@@ -48,11 +42,9 @@ class CustomDataset(Dataset):
         return annotations
 
     def __len__(self):
-        print("__len__()")
         return len(self.annotations)
 
     def __getitem__(self, idx):
-        # print("__getitem__()")
         annotation = self.annotations[idx]
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(image_path))
@@ -97,9 +89,6 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     loss_fn = nn.CrossEntropyLoss()
     optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
-    # criterion = nn.CrossEntropyLoss()
-    # optimizer = optim.Adam(model.parameters())
-
     # Create data loaders
     train_size = int(0.8 * len(dataset))
     test_size = len(dataset) - train_size
@@ -110,10 +99,8 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     # Train the model
     for epoch in range(num_epochs):
         print(f"epoch: {epoch}".format(epoch))
-        counter = 1
 
         for i, (inputs, labels) in enumerate(train_dataloader):
-            print(f"counter: {counter}".format(counter))
             
             optimizer.zero_grad()
             outputs = model(inputs)
@@ -132,14 +119,11 @@ def train(annotations_path, images_path, batch_size, num_epochs):
             loss.backward()
             optimizer.step()
 
-
             # Every 10 steps the progress is printed
             if (i+1) % 10 == 0:
                 print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}" 
                        .format(
                         epoch+1, num_epochs, i+1, len(train_dataloader), loss.item()))
-
-            counter += 1
 
     # Evaluate the model accuracy based on test data
     size = len(test_dataloader.dataset)
@@ -157,6 +141,10 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
     return model
 
+
+transform = transforms.Compose([
+    transforms.ToTensor()
+])
 
 batch_size = 64
 num_epochs = 10

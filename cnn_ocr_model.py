@@ -141,7 +141,7 @@ transform = transforms.Compose([
 ])
 
 batch_size = 64
-num_epochs = 10
+num_epochs = 5
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)

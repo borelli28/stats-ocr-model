@@ -140,7 +140,7 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-batch_size = 64
+batch_size = 250
 num_epochs = 5
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"

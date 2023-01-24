@@ -6,6 +6,7 @@ from torch.utils.data import Dataset, DataLoader
 import xml.etree.ElementTree as ET
 import os
 from PIL import Image
+from tqdm import tqdm
 
 
 class CustomDataset(Dataset):
@@ -65,7 +66,7 @@ class CNN_OCR(nn.Module):
         self.fc1 = nn.Linear(16 * 409 * 497, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, num_classes)
-        print(f"Num of classes: {num_classes}")
+        # print(f"Num of classes: {num_classes}")
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
@@ -97,28 +98,26 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
 
-    # Train the model
-    for epoch in range(num_epochs):
-        print(f"epoch: {epoch}".format(epoch))
+    with tqdm(total=num_epochs, desc="Epoch") as pbar_epoch:
+        for epoch in range(num_epochs):
 
-        for i, (inputs, labels) in enumerate(train_dataloader):
-            
-            optimizer.zero_grad()
-            outputs = model(inputs)
-            
-            loss = loss_fn(outputs, labels)
-            optimizer.zero_grad()
-            loss.backward()
-            optimizer.step()
+            with tqdm(total=len(train_dataloader), desc="Batch") as pbar_batch:
+                for i, (inputs, labels) in enumerate(train_dataloader):
+                    optimizer.zero_grad()
+                    outputs = model(inputs)
+                    
+                    loss = loss_fn(outputs, labels)
+                    optimizer.zero_grad()
+                    loss.backward()
+                    optimizer.step()
 
-            # Every 10 steps the progress is printed
-            if (i+1) % 10 == 0:
-                print("Epoch [{}/{}], Step [{}/{}], Loss: {:.4f}".format(
-                    epoch+1, num_epochs, i+1, len(train_dataloader), loss.item()))
+                    pbar_batch.update(1)
 
-    test(test_dataloader, loss_fn)
+            pbar_epoch.update(1)
 
-    return model
+        test(test_dataloader, loss_fn)
+
+        return model
 
 
 def test(self, test_dataloader, loss_function):

@@ -104,7 +104,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
             with tqdm(total=len(train_dataloader)) as pbar_batch:
                 for i, (inputs, labels) in enumerate(train_dataloader):
                     pbar_batch.set_description(
-                        f"Batch, training with batch: {i}".format(i+1))
+                        f"Training batch #{i+1}".format(i+1))
 
                     optimizer.zero_grad()
                     outputs = model(inputs)

@@ -98,11 +98,14 @@ def train(annotations_path, images_path, batch_size, num_epochs):
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
     test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
 
-    with tqdm(total=num_epochs, desc="Epoch") as pbar_epoch:
+    with tqdm(total=num_epochs, desc="Epochs") as pbar_epoch:
         for epoch in range(num_epochs):
 
-            with tqdm(total=len(train_dataloader), desc="Batch") as pbar_batch:
+            with tqdm(total=len(train_dataloader)) as pbar_batch:
                 for i, (inputs, labels) in enumerate(train_dataloader):
+                    pbar_batch.set_description(
+                        f"Training batch #{i+1}".format(i+1))
+
                     optimizer.zero_grad()
                     outputs = model(inputs)
                     
@@ -115,12 +118,12 @@ def train(annotations_path, images_path, batch_size, num_epochs):
 
             pbar_epoch.update(1)
 
-        test(test_dataloader, loss_fn)
+        test(model, test_dataloader, loss_fn)
 
         return model
 
 
-def test(self, test_dataloader, loss_function):
+def test(model, test_dataloader, loss_function):
     # Evaluate the model accuracy based on test data
     size = len(test_dataloader.dataset)
     num_batches = len(test_dataloader)

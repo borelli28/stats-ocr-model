@@ -120,7 +120,7 @@ def train(annotations_path, images_path, batch_size, num_epochs):
         return model
 
 
-def test(self, test_dataloader, loss_function):
+def test(test_dataloader, loss_function):
     # Evaluate the model accuracy based on test data
     size = len(test_dataloader.dataset)
     num_batches = len(test_dataloader)
@@ -140,8 +140,8 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-batch_size = 128
-num_epochs = 5
+batch_size = 250
+num_epochs = 1
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)

@@ -143,8 +143,8 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-batch_size = 256
-num_epochs = 1
+batch_size = 128
+num_epochs = 5
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs)

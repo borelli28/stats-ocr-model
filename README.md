@@ -6,7 +6,7 @@ This will be a OCR(Optical Character Recognition) model to extract statistics fr
 
 - SVM model: Current average accuracy in test data: **60.0%**
 
-- CNN model: Current average accuracy in test data: **03.0%**
+- CNN model: Current average accuracy in test data: **5.0%**
 
 ## Usage
 

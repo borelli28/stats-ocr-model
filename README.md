@@ -8,6 +8,23 @@ This will be a OCR(Optical Character Recognition) model to extract statistics fr
 
 - CNN model: Current average accuracy in test data: **5.0%**
 
+## Install Linux/MacOS
+
+Clone repo
+```git clone https://github.com/borelli28/stats-ocr-model.git```
+
+Create virtual env for packages
+```python3 -m venv myenv```
+
+Activate virtual env
+```source myenv/bin/activate```
+
+Move into repo
+```cd stats-ocr-model```
+
+Install packages in requirements.txt
+```pip install -r requirements.txt```
+
 ## Usage
 
 Creates **players.csv** with All players: **Names**, **ID's** & stats **URL's**

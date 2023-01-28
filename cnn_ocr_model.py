@@ -59,25 +59,34 @@ class CustomDataset(Dataset):
 class CNN_OCR(nn.Module):
     def __init__(self, num_classes):
         super().__init__()
-        # nn.Conv2d(in_channels=1, out_channels=6, kernel_size=5)
+        # The first convolutional layer takes in a 1-channel image and applies 6 filters of kernel size 5
         self.conv1 = nn.Conv2d(1, 6, 5)
+        # Max pooling layer with kernel size 2x2
         self.pool = nn.MaxPool2d(2, 2)
+        # The second convolutional layer takes in the output of the first convolutional layer and applies 16 filters of kernel size 5
         self.conv2 = nn.Conv2d(6, 16, 5)
+        # Fully connected layers with 120, 84 and num_classes neurons respectively
         self.fc1 = nn.Linear(16 * 409 * 497, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, num_classes)
         # print(f"Num of classes: {num_classes}")
 
     def forward(self, x):
+        # Apply first convolutional layer, ReLU activation function, and max pooling
         x = self.pool(F.relu(self.conv1(x)))
+        # Apply second convolutional layer, ReLU activation function, and max pooling
         x = self.pool(F.relu(self.conv2(x)))
 
+        # Flatten the output of the second convolutional layer
         x = torch.flatten(x, 1)
+        # Apply fully connected layers with ReLU activation function
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
+        # Apply final fully connected layer
         x = self.fc3(x)
 
         return x
+
 
 
 def train(annotations_path, images_path, batch_size, num_epochs):

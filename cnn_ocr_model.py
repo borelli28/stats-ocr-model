@@ -10,8 +10,8 @@ from tqdm import tqdm
 
 
 class CustomDataset(Dataset):
-    def __init__(self, annotations_path, images_path, classes=None):
-        self.classes = classes
+    def __init__(self, annotations_path, images_path, labels=None):
+        self.labels = labels
         self.images_path = images_path
         self.annotations_path = annotations_path
         self.annotations = self.parse_annotations()
@@ -19,7 +19,7 @@ class CustomDataset(Dataset):
     # Returns annotations in a format that the model prefers
     def parse_annotations(self):
         annotations = []
-        classes = set()
+        labels = set()
 
         for filename in os.listdir(self.annotations_path):
             if filename.endswith(".xml"):
@@ -30,7 +30,7 @@ class CustomDataset(Dataset):
                 image_path = os.path.join(self.images_path, image_name)
                 for obj in root.findall("object"):
                     label = obj.find("name").text
-                    classes.add(label)
+                    labels.add(label)
                     xmin = int(float(obj.find("bndbox/xmin").text))
                     ymin = int(float(obj.find("bndbox/ymin").text))
                     xmax = int(float(obj.find("bndbox/xmax").text))
@@ -38,7 +38,8 @@ class CustomDataset(Dataset):
                     annotations.append({
                         "label": label, "xmin": xmin, "ymin": ymin, "xmax": xmax, "ymax": ymax, "image_path": image_path})
         
-        self.classes = list(classes)
+        self.labels = list(labels)
+        print("labels in annotations: {len_labels}".format(len_labels=str(len(labels))))
 
         return annotations
 
@@ -50,7 +51,7 @@ class CustomDataset(Dataset):
         image_path = annotation["image_path"]
         image = Image.open(os.path.join(image_path))
         image = transform(image)
-        label = self.classes.index(annotation["label"])
+        label = self.labels.index(annotation["label"])
 
         return image, label
 
@@ -69,7 +70,7 @@ class CNN_OCR(nn.Module):
         self.fc1 = nn.Linear(16 * 409 * 497, 120)
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, num_classes)
-        # print(f"Num of classes: {num_classes}")
+        print(f"Num of classes: {num_classes}")
 
     def forward(self, x):
         # Apply first convolutional layer, ReLU activation function, and max pooling
@@ -89,47 +90,49 @@ class CNN_OCR(nn.Module):
 
 
 
-def train(annotations_path, images_path, batch_size, num_epochs):
-    dataset = CustomDataset(annotations_path, images_path)
-    num_classes = len(dataset.classes)
+def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
+    try:
+        dataset = CustomDataset(annotations_path, images_path)
 
-    model = CNN_OCR(num_classes)
+        model = CNN_OCR(num_classes)
 
-    # Define the loss function and optimizer
-    loss_fn = nn.CrossEntropyLoss()
-    optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+        # Define the loss function and optimizer
+        loss_fn = nn.CrossEntropyLoss()
+        optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
-    train_size = int(0.8 * len(dataset))
-    test_size = len(dataset) - train_size
+        train_size = int(0.8 * len(dataset))
+        test_size = len(dataset) - train_size
 
-    # Create data loaders
-    train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
-    test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
+        # Create data loaders
+        train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
+        train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
+        test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
 
-    with tqdm(total=num_epochs, desc="Epochs") as pbar_epoch:
-        for epoch in range(num_epochs):
+        with tqdm(total=num_epochs, desc="Epochs") as pbar_epoch:
+            for epoch in range(num_epochs):
 
-            with tqdm(total=len(train_dataloader)) as pbar_batch:
-                for i, (inputs, labels) in enumerate(train_dataloader):
-                    pbar_batch.set_description(
-                        f"Training batch #{i+1}".format(i+1))
+                with tqdm(total=len(train_dataloader)) as pbar_batch:
+                    for i, (inputs, labels) in enumerate(train_dataloader):
+                        pbar_batch.set_description(
+                            f"Training batch #{i+1}".format(i+1))
 
-                    optimizer.zero_grad()
-                    outputs = model(inputs)
-                    
-                    loss = loss_fn(outputs, labels)
-                    optimizer.zero_grad()
-                    loss.backward()
-                    optimizer.step()
+                        optimizer.zero_grad()
+                        outputs = model(inputs)
+                        
+                        loss = loss_fn(outputs, labels)
+                        optimizer.zero_grad()
+                        loss.backward()
+                        optimizer.step()
 
-                    pbar_batch.update(1)
+                        pbar_batch.update(1)
 
-            pbar_epoch.update(1)
+                pbar_epoch.update(1)
 
-        test(model, test_dataloader, loss_fn)
+            test(model, test_dataloader, loss_fn)
 
-        return model
+            return model
+    except Exception as error:
+        print(error)
 
 
 def test(model, test_dataloader, loss_function):
@@ -152,11 +155,12 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-batch_size = 128
-num_epochs = 25
+batch_size = 10
+num_epochs = 10
+num_classes = 83
 annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
-model = train(annotations_path, images_path, batch_size, num_epochs)
+model = train(annotations_path, images_path, batch_size, num_epochs, num_classes)
 
 # Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")

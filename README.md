@@ -60,15 +60,7 @@ python3 cnn_ocr_model.py
 
 Annotations file format: `Pascal VOC XML`
 
-Annotations should include categories and labels
-
-*Categories*:
-- Numbers: `number`
-- Words & Letters: `word`
-- Characters like this; `-`, `.`, `/`: `symbol`
-
-*Labels*:
-- Values(`HR`, `2`, `Season`, etc.)
+Annotations should include the category(`characters`) and the label value(`MLB`, `1`, `.`, etc.)
 
 Annotations are saved in `stats-ocr-model/assets/annotations` directory
 

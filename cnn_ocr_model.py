@@ -96,14 +96,12 @@ def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
 
         model = CNN_OCR(num_classes)
 
-        # Define the loss function and optimizer
         loss_fn = nn.CrossEntropyLoss()
         optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
 
         train_size = int(0.8 * len(dataset))
         test_size = len(dataset) - train_size
 
-        # Create data loaders
         train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
         train_dataloader = DataLoader(train_dataset, batch_size=batch_size)
         test_dataloader = DataLoader(test_dataset, batch_size=batch_size)
@@ -134,9 +132,8 @@ def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
     except Exception as error:
         print(error)
 
-
+# Evaluate the model accuracy based on test data
 def test(model, test_dataloader, loss_function):
-    # Evaluate the model accuracy based on test data
     size = len(test_dataloader.dataset)
     num_batches = len(test_dataloader)
     model.eval()
@@ -162,6 +159,5 @@ annotations_path = "./assets/annotations"
 images_path = "./assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs, num_classes)
 
-# Save model
 torch.save(model.state_dict(), "./models/cnn_model.pth")
 print("Saved PyTorch Model State to ./models/cnn_model.pth")

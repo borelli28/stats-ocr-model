@@ -97,7 +97,7 @@ def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
         model = CNN_OCR(num_classes)
 
         loss_fn = nn.CrossEntropyLoss()
-        optimizer = torch.optim.SGD(model.parameters(), lr=1e-3)
+        optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
 
         train_size = int(0.8 * len(dataset))
         test_size = len(dataset) - train_size

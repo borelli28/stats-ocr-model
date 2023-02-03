@@ -157,9 +157,9 @@ transform = transforms.Compose([
 batch_size = 10
 num_epochs = 10
 num_classes = 83
-annotations_path = "./assets/annotations"
-images_path = "./assets/labeled-images"
+annotations_path = "../assets/annotations"
+images_path = "../assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs, num_classes)
 
-torch.save(model.state_dict(), "./models/cnn_model.pth")
+torch.save(model.state_dict(), "../models/cnn_model.pth")
 print("Saved PyTorch Model State to ./models/cnn_model.pth")

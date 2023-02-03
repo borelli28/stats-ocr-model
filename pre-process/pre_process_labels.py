@@ -57,7 +57,7 @@ def remove_unwanted_words(annotations_path, unwanted_words):
             tree.write(file_path)
 
 
-annotations_path = "./assets/annotations"
+annotations_path = "../assets/annotations"
 
 labels = load_labels(annotations_path)
 

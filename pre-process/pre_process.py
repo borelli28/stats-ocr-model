@@ -3,7 +3,7 @@ import csv
 
 
 # Open the file for reading
-with open('players.csv', 'r') as csvfile:
+with open('../get-images/players.csv', 'r') as csvfile:
     # Create a CSV reader object
     reader = csv.reader(csvfile)
 
@@ -18,7 +18,7 @@ with open('players.csv', 'r') as csvfile:
         print(f"Working with {name} image...")
 
         # Load image
-        image = Image.open(f"./assets/label-images/{name}.png".format(name))
+        image = Image.open(f"../assets/label-images/{name}.png".format(name))
 
 		# Convert the image to grayscale
         image = image.convert('L')
@@ -27,6 +27,6 @@ with open('players.csv', 'r') as csvfile:
 		# Crop the image
 		# 						(left, upper, right, lower)
         cropped_image = image.crop((0, 350, 2000, 2000))
-        cropped_image.save(f"./assets/label-images/{name}.png".format(name))
+        cropped_image.save(f"../assets/label-images/{name}.png".format(name))
 
         print(f"Done with {name} image")

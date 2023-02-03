@@ -38,7 +38,7 @@ with open('players.csv', 'r') as csvfile:
 
 		# Take and save screenshot
         name = str(row[0])
-        driver.find_element(By.TAG_NAME, "body").screenshot(f"./assets/images/{name}.png".format(name))
+        driver.find_element(By.TAG_NAME, "body").screenshot(f"../assets/images/{name}.png".format(name))
 
         # IMPORTANT: Wait between each URL request to not overwhelm the server
         sleep(2.1)

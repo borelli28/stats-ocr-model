@@ -53,7 +53,7 @@ def evaluate_accuracy(predictions, labels):
 def extract_data():
     print("Extracting data from training data...")
     # Path to the annotations folder
-    annotation_folder = "./assets/annotations"
+    annotation_folder = "../assets/annotations"
 
     # List to store the features and labels
     X = []
@@ -81,7 +81,7 @@ def extract_data():
         image_filename = tree.find("filename").text
         
         # Construct the full path to the image file
-        image_path = os.path.join("./assets/labeled-images", image_filename)
+        image_path = os.path.join("../assets/labeled-images", image_filename)
         
         # Open the image
         image = Image.open(image_path)
@@ -231,7 +231,7 @@ def run():
     X, y = extract_data()
     model = train_model(X, y)
     # Save the trained model to a file
-    with open("./models/svm_model.pkl", "wb") as f:
+    with open("../models/svm_model.pkl", "wb") as f:
         pickle.dump(model, f)
 
 

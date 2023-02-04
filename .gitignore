@@ -20,5 +20,7 @@ __pycache__
 
 # assets folder
 /images
+images/
 /preprocessed-images
+preprocessed-images/
 old-annotations.zip

@@ -171,22 +171,24 @@ def train_model(X, y):
     X = np.array(X, dtype=np.float32)
     y = np.array(y)
 
-    # Make sure the images have a consistent shape
+    # Prints count of labels and features
+    len_y = len(y)
+    print(f"labels length: {len_y}".format(len_y))
+    len_x = len(X)
+    print(f"features length: {len_x}".format(len_x))
+
     X = X.reshape(X.shape[0], -1)
 
     # Split the data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
-    # Create an SVM classifier
     clf = SVC()
 
     # Train the classifier on the training data
     clf.fit(X_train, y_train)
 
-    # Use the classifier to make predictions on the test data
     predictions = clf.predict(X_test)
 
-    # Evaluate the performance of the classifier
     accuracy = evaluate_accuracy(predictions, y_test)
 
     print(f"Accuracy: {accuracy:.2f}")
@@ -196,12 +198,6 @@ def train_model(X, y):
     print("--------------------------------------------------")
     print(predictions)
     print("*Prediction*\n")
-
-    # Prints count of labels and features
-    len_y = len(y)
-    print(f"y(labels) length: {len_y}".format(len_y))
-    len_x = len(X)
-    print(f"X(features) length: {len_x}".format(len_x))
 
     # Get the three labels with the highest number of incorrect predictions
     top_incorrect_labels = get_top_incorrect_predictions(predictions, y_test)

@@ -123,7 +123,7 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
     # Train the model with different values of the regularization parameter C
     for C in C_values:
         # Create an SVM model with the given value of C
-        svm = SVC(C=C, kernel='linear')
+        svm = SVC(C=C, kernel="linear")
 
         # Train the model on the training data
         svm.fit(X_train, y_train)
@@ -133,11 +133,11 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
         val_loss.append(svm.score(X_val, y_val))
 
     # Plot the training and validation loss
-    plt.plot(C_values, train_loss, 'bo', label='Training loss')
-    plt.plot(C_values, val_loss, 'b', label='Validation loss')
-    plt.title('Training and validation loss')
-    plt.xlabel('Regularization parameter C')
-    plt.ylabel('Loss')
+    plt.plot(C_values, train_loss, "bo", label="Training loss")
+    plt.plot(C_values, val_loss, "b", label="Validation loss")
+    plt.title("Training and validation loss")
+    plt.xlabel("Regularization parameter C")
+    plt.ylabel("Loss")
     plt.legend()
 
     plt.show()
@@ -182,7 +182,7 @@ def train_model(X, y):
     # Split the data into training and test sets
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 
-    clf = SVC()
+    clf = SVC(kernel="linear")
 
     # Train the classifier on the training data
     clf.fit(X_train, y_train)

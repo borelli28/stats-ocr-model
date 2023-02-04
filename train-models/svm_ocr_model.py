@@ -212,7 +212,6 @@ def train_model(X, y):
     the training data.
     It is calculated as the average of the errors made by the model 
     on the training data.
-
     Validation loss is a measure of how well the model is able to 
     generalize to new, unseen data.
     It is calculated as the average of the errors made 

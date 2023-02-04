@@ -9,8 +9,6 @@ venv.bak/
 
 
 todo.txt
-assets/
-/images
 train-data/
 
 __pycache__
@@ -18,3 +16,9 @@ __pycache__
 
 # Saved model files
 /models
+
+
+# assets folder
+/images
+/preprocessed-images
+old-annotations.zip

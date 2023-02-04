@@ -187,6 +187,10 @@ def train_model(X, y):
     # Train the classifier on the training data
     clf.fit(X_train, y_train)
 
+    print("\n shape")
+    print(X_test.shape)
+    print("\n")
+
     predictions = clf.predict(X_test)
 
     accuracy = evaluate_accuracy(predictions, y_test)
@@ -217,6 +221,43 @@ def train_model(X, y):
     It is calculated as the average of the errors made 
     by the model on the validation data.
     """
+
+    """
+    Model image prediction experiment
+    """
+    # image_path = "../assets/labeled-images/aaron-judge.png"
+    # image = Image.open(image_path)
+
+    # # Convert the image to a NumPy array with a consistent shape
+    # image_array = np.array(image, dtype=np.float32)
+    # image_array = image_array.reshape((1,) + image_array.shape)
+
+    # # Extract features from the image
+    # features = extract_features(image_array)
+
+    # print("\n shape")
+    # print(features.shape)
+    # print("\n")
+
+    # features = X.reshape(X.shape[0], -1)
+
+    # print("\n shape")
+    # print(features.shape)
+    # print("\n")
+
+    # # Make a prediction using the model
+    # prediction = clf.predict(features)
+    # print("\npredictioooon:")
+    # print(prediction)
+    # print(len(prediction))
+    # print(type(prediction))
+
+    # array_length = len(prediction)
+
+    # for i in range(0, array_length, 10):
+    #     print(prediction[i:i+10])
+
+    # print("\n")
 
     return clf
 

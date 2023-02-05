@@ -111,12 +111,6 @@ def extract_data(image_path, annotations_path):
         
         # Parse the XML tree from the file
         tree = ET.parse(file_path)
-
-        # Find the filename of the image
-        image_filename = tree.find("filename").text
-        
-        # Construct the full path to the image file
-        image_path = os.path.join("../assets/labeled-images", image_filename)
         
         # Open the image
         image = Image.open(image_path)
@@ -174,7 +168,7 @@ img = Image.open(image_path)
 width, height = img.size
 create_annotation_file(image_path, width, height, result)
 
-annotations_path = "./read-annotations/aaron-judge.xml"
+annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
 
 

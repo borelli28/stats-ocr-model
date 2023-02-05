@@ -249,15 +249,12 @@ def train_model(X, y):
     # prediction = clf.predict(features)
     # print("\npredictioooon:")
     # print(prediction)
-    # print(len(prediction))
+    # print(prediction.size)
     # print(type(prediction))
-
-    # array_length = len(prediction)
-
-    # for i in range(0, array_length, 10):
-    #     print(prediction[i:i+10])
-
     # print("\n")
+
+    # for i in range(len(prediction)):
+    #     print(prediction[i])
 
     return clf
 

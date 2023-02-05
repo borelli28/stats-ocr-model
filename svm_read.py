@@ -78,11 +78,11 @@ def create_annotation_file(filename, image_width, image_height, objects):
         ymax.text = str(box_coords[1][1])
 
     tree = ET.ElementTree(root)
-    tree.write(image_path.split("/")[-1].split(".")[0] + ".xml")
+    tree.write("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml")
 
     # Prettify xml file
     xml_str = prettify_xml(root)
-    with open(image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
+    with open("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
         f.write(xml_str)
 
 
@@ -165,15 +165,17 @@ def read_image(img_data):
 
 image_path = "./assets/labeled-images/aaron-judge.png"
 # print(pytesseract.image_to_boxes(Image.open(image_path)))
+
 svm_model = joblib.load("./models/svm_model.pkl")
-# img_data = extract_data()
-# read_image(img_data)
 
 result = reader.readtext(image_path)
 
 img = Image.open(image_path)
 width, height = img.size
 create_annotation_file(image_path, width, height, result)
+
+annotations_path = "aaron-judge.xml"
+img_data = extract_data(image_path, annotations_path)
 
 
 

@@ -146,14 +146,14 @@ def extract_data(image_path, annotations_path):
 def read_image(img_data):
 
     # Convert the lists to numpy arrays
-    X = np.array(img_data, dtype=np.float32)
+    features = np.array(img_data, dtype=np.float32)
 
-    len_x = len(X)
-    print(f"img data length: {len_x}".format(len_x))
+    len_x = len(features)
+    print(f"features length: {len_x}".format(len_x))
 
-    X = X.reshape(X.shape[0], -1)
+    features = features.reshape(features.shape[0], -1)
 
-    prediction = svm_model.predict(X)
+    prediction = svm_model.predict(features)
 
     return prediction
 

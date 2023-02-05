@@ -3,6 +3,7 @@ import numpy as np
 import joblib
 import os
 import xml.etree.ElementTree as ET
+from xml.dom import minidom
 import cv2
 import pytesseract
 import easyocr
@@ -12,6 +13,14 @@ import easyocr
 reader = easyocr.Reader(["en"], gpu=False)
 
 
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = ET.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
+
+
 # Create the annotation file in PASCAL VOX XML format
 def create_annotation_file(filename, image_width, image_height, objects):
     root = ET.Element("annotation")
@@ -19,11 +28,12 @@ def create_annotation_file(filename, image_width, image_height, objects):
     folder = ET.SubElement(root, "folder")
     folder.text = "images"
 
+    image_name = filename.split("/")[-1].split(".")[0]
     filename_element = ET.SubElement(root, "filename")
-    filename_element.text = filename
+    filename_element.text = image_name
 
     path = ET.SubElement(root, "path")
-    path.text = "images/" + filename
+    path.text = filename
 
     source = ET.SubElement(root, "source")
     database = ET.SubElement(source, "database")
@@ -41,17 +51,13 @@ def create_annotation_file(filename, image_width, image_height, objects):
     segmented.text = "0"
 
     for obj in objects:
-        print("\nobj:")
-        print(obj)
-        print("\n")
-
         box_coords = obj[0]
         label_value = obj[1]
         pred_accuracy = obj[2]
 
-        print(box_coords)
-        print(label_value)
-        print(pred_accuracy)
+        # print(box_coords)
+        # print(label_value)
+        # print(pred_accuracy)
 
         object_ = ET.SubElement(root, "object")
         name = ET.SubElement(object_, "name")
@@ -75,6 +81,11 @@ def create_annotation_file(filename, image_width, image_height, objects):
 
     tree = ET.ElementTree(root)
     tree.write(image_path.split("/")[-1].split(".")[0] + ".xml")
+
+    # Prettify xml file
+    xml_str = prettify(root)
+    with open(image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
+        f.write(xml_str)
 
 
 def extract_features(image):

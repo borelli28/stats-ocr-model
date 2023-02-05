@@ -9,7 +9,6 @@ from heapq import nlargest
 import pickle
 
 
-# Extract features from the images
 def extract_features(image):
     # print("Extracting features...")
     # Convert the image to a NumPy array with a consistent shape
@@ -21,7 +20,6 @@ def extract_features(image):
     return features
 
 
-# Define a function to extract labels from the annotations
 def extract_labels(annotation):
     # print("Extracting labels...")
     labels = []
@@ -35,7 +33,6 @@ def extract_labels(annotation):
     return labels
 
 
-# Define a function to evaluate the accuracy of the model
 def evaluate_accuracy(predictions, labels):
     print("Evaluating accuracy...")
     # Calculate the number of correct predictions
@@ -143,7 +140,6 @@ def plot_loss(X_train, y_train, X_val, y_val, C_values):
     plt.show()
 
 
-# Get the most incorrectly labeled characters in the prediction
 # num_labels decide how many the function will return
 def get_top_incorrect_predictions(predictions, labels, num_labels=3):
     # Stores the counts of incorrect predictions for each label
@@ -260,10 +256,9 @@ def train_model(X, y):
 
 
 def run():
-    # Convert extract_data from tuple to variables
     X, y = extract_data()
     model = train_model(X, y)
-    # Save the trained model to a file
+
     with open("../models/svm_model.pkl", "wb") as f:
         pickle.dump(model, f)
 

@@ -171,6 +171,7 @@ create_annotation_file(image_path, width, height, result)
 
 annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
+print(read_image(img_data))
 
 
 

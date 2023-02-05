@@ -41,27 +41,40 @@ def create_annotation_file(filename, image_width, image_height, objects):
     segmented.text = "0"
 
     for obj in objects:
+        print("\nobj:")
+        print(obj)
+        print("\n")
+
+        box_coords = obj[0]
+        label_value = obj[1]
+        pred_accuracy = obj[2]
+
+        print(box_coords)
+        print(label_value)
+        print(pred_accuracy)
+
         object_ = ET.SubElement(root, "object")
-        # name = ET.SubElement(object_, "name")
-        # name.text = obj["class"]
-        # pose = ET.SubElement(object_, "pose")
-        # pose.text = "Unspecified"
-        # truncated = ET.SubElement(object_, "truncated")
-        # truncated.text = "0"
-        # difficult = ET.SubElement(object_, "difficult")
-        # difficult.text = "0"
+        name = ET.SubElement(object_, "name")
+        name.text = label_value
+        pose = ET.SubElement(object_, "pose")
+        pose.text = "Unspecified"
+        truncated = ET.SubElement(object_, "truncated")
+        truncated.text = "0"
+        difficult = ET.SubElement(object_, "difficult")
+        difficult.text = "0"
+
         bndbox = ET.SubElement(object_, "bndbox")
         xmin = ET.SubElement(bndbox, "xmin")
-        xmin.text = str(obj["bbox"][0])
+        xmin.text = str(box_coords[0][0])
         ymin = ET.SubElement(bndbox, "ymin")
-        ymin.text = str(obj["bbox"][1])
+        ymin.text = str(box_coords[3][1])
         xmax = ET.SubElement(bndbox, "xmax")
-        xmax.text = str(obj["bbox"][2])
+        xmax.text = str(box_coords[2][0])
         ymax = ET.SubElement(bndbox, "ymax")
-        ymax.text = str(obj["bbox"][3])
+        ymax.text = str(box_coords[1][1])
 
     tree = ET.ElementTree(root)
-    tree.write(filename.split(".")[0] + ".xml")
+    tree.write(image_path.split("/")[-1].split(".")[0] + ".xml")
 
 
 def extract_features(image):

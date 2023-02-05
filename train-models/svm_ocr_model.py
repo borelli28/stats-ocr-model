@@ -10,7 +10,6 @@ import pickle
 
 
 def extract_features(image):
-    # print("Extracting features...")
     # Convert the image to a NumPy array with a consistent shape
     image_array = np.array(image, dtype=np.float32)
     image_array = image_array.reshape((1,) + image_array.shape)
@@ -21,7 +20,6 @@ def extract_features(image):
 
 
 def extract_labels(annotation):
-    # print("Extracting labels...")
     labels = []
     
     # Iterate over the objects in the annotation
@@ -35,13 +33,8 @@ def extract_labels(annotation):
 
 def evaluate_accuracy(predictions, labels):
     print("Evaluating accuracy...")
-    # Calculate the number of correct predictions
     correct_predictions = sum(predictions == labels)
-    
-    # Calculate the total number of predictions
     total_predictions = len(predictions)
-    
-    # Calculate the accuracy as a percentage
     accuracy = correct_predictions / total_predictions * 100
     
     return accuracy
@@ -49,7 +42,6 @@ def evaluate_accuracy(predictions, labels):
 
 def extract_data():
     print("Extracting data from training data...")
-    # Path to the annotations folder
     annotation_folder = "../assets/annotations"
 
     # List to store the features and labels
@@ -102,7 +94,6 @@ def extract_data():
             image_array = np.array(resized_image, dtype=np.float32)
             image_array = image_array.reshape((1,) + image_array.shape)
 
-            # Extract features from the image
             features = extract_features(image_array)
 
             # Add the features to the list
@@ -113,7 +104,6 @@ def extract_data():
 
 # Plot the training and validation loss over time
 def plot_loss(X_train, y_train, X_val, y_val, C_values):
-    # Create lists to store the training and validation loss
     train_loss = []
     val_loss = []
 

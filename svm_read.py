@@ -67,15 +67,16 @@ def create_annotation_file(filename, image_width, image_height, objects):
         difficult = ET.SubElement(object_, "difficult")
         difficult.text = "0"
 
+        # xmin, ymin, xmax, ymax
         bndbox = ET.SubElement(object_, "bndbox")
         xmin = ET.SubElement(bndbox, "xmin")
         xmin.text = str(box_coords[0][0])
         ymin = ET.SubElement(bndbox, "ymin")
-        ymin.text = str(box_coords[3][1])
+        ymin.text = str(box_coords[1][1])
         xmax = ET.SubElement(bndbox, "xmax")
         xmax.text = str(box_coords[2][0])
         ymax = ET.SubElement(bndbox, "ymax")
-        ymax.text = str(box_coords[1][1])
+        ymax.text = str(box_coords[3][1])
 
     tree = ET.ElementTree(root)
     tree.write("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml")

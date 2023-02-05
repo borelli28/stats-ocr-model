@@ -256,10 +256,9 @@ def train_model(X, y):
 
 
 def run():
-    # Convert extract_data from tuple to variables
     X, y = extract_data()
     model = train_model(X, y)
-    # Save the trained model to a file
+
     with open("../models/svm_model.pkl", "wb") as f:
         pickle.dump(model, f)
 

@@ -174,7 +174,7 @@ img = Image.open(image_path)
 width, height = img.size
 create_annotation_file(image_path, width, height, result)
 
-annotations_path = "aaron-judge.xml"
+annotations_path = "./read-annotations/aaron-judge.xml"
 img_data = extract_data(image_path, annotations_path)
 
 

@@ -3,6 +3,17 @@ import numpy as np
 import joblib
 import os
 import xml.etree.ElementTree as ET
+import cv2
+import pytesseract
+import easyocr
+
+
+# Needs to run only once to load the model into memory
+reader = easyocr.Reader(["en"], gpu=False)
+
+image_path = "./assets/labeled-images/aaron-judge.png"
+result = reader.readtext(image_path)
+print(result)
 
 
 def extract_features(image):
@@ -82,10 +93,12 @@ def read_image(img_data):
     return prediction
 
 
-svm_model = joblib.load("./models/svm_model.pkl")
 image_path = "./assets/labeled-images/aaron-judge.png"
+# print(pytesseract.image_to_boxes(Image.open(image_path)))
+svm_model = joblib.load("./models/svm_model.pkl")
 img_data = extract_data()
 read_image(img_data)
+
 
 
 

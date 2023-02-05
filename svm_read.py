@@ -11,9 +11,57 @@ import easyocr
 # Needs to run only once to load the model into memory
 reader = easyocr.Reader(["en"], gpu=False)
 
-image_path = "./assets/labeled-images/aaron-judge.png"
-result = reader.readtext(image_path)
-print(result)
+
+# Create the annotation file in PASCAL VOX XML format
+def create_annotation_file(filename, image_width, image_height, objects):
+    root = ET.Element("annotation")
+
+    folder = ET.SubElement(root, "folder")
+    folder.text = "images"
+
+    filename_element = ET.SubElement(root, "filename")
+    filename_element.text = filename
+
+    path = ET.SubElement(root, "path")
+    path.text = "images/" + filename
+
+    source = ET.SubElement(root, "source")
+    database = ET.SubElement(source, "database")
+    database.text = "Unknown"
+
+    size = ET.SubElement(root, "size")
+    width = ET.SubElement(size, "width")
+    width.text = str(image_width)
+    height = ET.SubElement(size, "height")
+    height.text = str(image_height)
+    depth = ET.SubElement(size, "depth")
+    depth.text = "3"
+
+    segmented = ET.SubElement(root, "segmented")
+    segmented.text = "0"
+
+    for obj in objects:
+        object_ = ET.SubElement(root, "object")
+        # name = ET.SubElement(object_, "name")
+        # name.text = obj["class"]
+        # pose = ET.SubElement(object_, "pose")
+        # pose.text = "Unspecified"
+        # truncated = ET.SubElement(object_, "truncated")
+        # truncated.text = "0"
+        # difficult = ET.SubElement(object_, "difficult")
+        # difficult.text = "0"
+        bndbox = ET.SubElement(object_, "bndbox")
+        xmin = ET.SubElement(bndbox, "xmin")
+        xmin.text = str(obj["bbox"][0])
+        ymin = ET.SubElement(bndbox, "ymin")
+        ymin.text = str(obj["bbox"][1])
+        xmax = ET.SubElement(bndbox, "xmax")
+        xmax.text = str(obj["bbox"][2])
+        ymax = ET.SubElement(bndbox, "ymax")
+        ymax.text = str(obj["bbox"][3])
+
+    tree = ET.ElementTree(root)
+    tree.write(filename.split(".")[0] + ".xml")
 
 
 def extract_features(image):
@@ -96,8 +144,14 @@ def read_image(img_data):
 image_path = "./assets/labeled-images/aaron-judge.png"
 # print(pytesseract.image_to_boxes(Image.open(image_path)))
 svm_model = joblib.load("./models/svm_model.pkl")
-img_data = extract_data()
-read_image(img_data)
+# img_data = extract_data()
+# read_image(img_data)
+
+result = reader.readtext(image_path)
+
+img = Image.open(image_path)
+width, height = img.size
+create_annotation_file(image_path, width, height, result)
 
 
 

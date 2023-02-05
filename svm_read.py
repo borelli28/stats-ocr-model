@@ -13,9 +13,7 @@ import easyocr
 reader = easyocr.Reader(["en"], gpu=False)
 
 
-def prettify(elem):
-    """Return a pretty-printed XML string for the Element.
-    """
+def prettify_xml(elem):
     rough_string = ET.tostring(elem, 'utf-8')
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
@@ -83,7 +81,7 @@ def create_annotation_file(filename, image_width, image_height, objects):
     tree.write(image_path.split("/")[-1].split(".")[0] + ".xml")
 
     # Prettify xml file
-    xml_str = prettify(root)
+    xml_str = prettify_xml(root)
     with open(image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
         f.write(xml_str)
 

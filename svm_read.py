@@ -5,7 +5,6 @@ import os
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import cv2
-import pytesseract
 import easyocr
 
 
@@ -13,8 +12,69 @@ import easyocr
 reader = easyocr.Reader(["en"], gpu=False)
 
 
+def draw_boxes(image_path, annotations_path):
+    img = cv2.imread(image_path)
+
+    # Load XML file
+    tree = ET.parse(annotations_path)
+    root = tree.getroot()
+
+    # Grab boxes values and draws the rectangles
+    for obj in root.iter("object"):
+        bndbox = obj.find("bndbox")
+
+        xmin = None
+        ymin = None
+        xmax = None
+        ymax = None
+
+        value = bndbox.find("xmin").text
+        if value.isdigit():
+            xmin = int(bndbox.find("xmin").text)
+        else:
+            # Handle the error case where the value is not a valid integer
+            float_value = float(value)
+            int_value = int(float_value)
+            xmin = int(int_value)
+
+        value = bndbox.find("ymin").text
+        if value.isdigit():
+            ymin = int(bndbox.find("ymin").text)
+        else:
+            # Handle the error case where the value is not a valid integer
+            float_value = float(value)
+            int_value = int(float_value)
+            ymin = int(int_value)
+
+        value = bndbox.find("xmax").text
+        if value.isdigit():
+            xmax = int(bndbox.find("xmax").text)
+        else:
+            # Handle the error case where the value is not a valid integer
+            float_value = float(value)
+            int_value = int(float_value)
+            xmax = int(int_value)
+
+        value = bndbox.find("ymax").text
+        if value.isdigit():
+            ymax = int(bndbox.find("ymax").text)
+        else:
+            # Handle the error case where the value is not a valid integer
+            float_value = float(value)
+            int_value = int(float_value)
+            ymax = int(int_value)
+
+        # Draw rectangle on image
+        cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
+
+    # Display image
+    cv2.imshow("Image with bounding boxes", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+
 def prettify_xml(elem):
-    rough_string = ET.tostring(elem, 'utf-8')
+    rough_string = ET.tostring(elem, "utf-8")
     reparsed = minidom.parseString(rough_string)
     return reparsed.toprettyxml(indent="  ")
 
@@ -159,7 +219,6 @@ def read_image(img_data):
 
 
 image_path = "./assets/labeled-images/aaron-judge.png"
-# print(pytesseract.image_to_boxes(Image.open(image_path)))
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
@@ -173,7 +232,6 @@ annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
 print(read_image(img_data))
 
-
-
-
+annotations_path = "./read-annotations/aaron-judge.xml"
+draw_boxes(image_path, annotations_path)
 

@@ -5,11 +5,6 @@ import os
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import cv2
-import easyocr
-
-
-# Needs to run only once to load the model into memory
-reader = easyocr.Reader(["en"], gpu=False)
 
 
 def draw_boxes(image_path, annotations_path):
@@ -82,6 +77,9 @@ def prettify_xml(elem):
 # Create the annotation file in PASCAL VOX XML format
 def create_annotation_file(filename, image_width, image_height, objects):
     root = ET.Element("annotation")
+
+    print("\nobjects")
+    print(objects)
 
     folder = ET.SubElement(root, "folder")
     folder.text = "images"
@@ -204,6 +202,8 @@ def extract_data(image_path, annotations_path):
 
 
 def read_image(img_data):
+    print("\nimg_data")
+    print(img_data)
 
     # Convert the lists to numpy arrays
     features = np.array(img_data, dtype=np.float32)
@@ -222,16 +222,23 @@ image_path = "./assets/labeled-images/aaron-judge.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
-result = reader.readtext(image_path)
-
 img = Image.open(image_path)
-width, height = img.size
-create_annotation_file(image_path, width, height, result)
 
-annotations_path = "./read-annotations"
-img_data = extract_data(image_path, annotations_path)
-print(read_image(img_data))
+preprocessed_image = cv2.imread(image_path, 0)
+result = preprocessed_image.reshape(-1)
+print(type(result))
+result = [result]
+print(type(result))
 
-annotations_path = "./read-annotations/aaron-judge.xml"
-draw_boxes(image_path, annotations_path)
+print(read_image(result))
+
+# width, height = img.size
+# create_annotation_file(image_path, width, height, result)
+
+# annotations_path = "./read-annotations"
+# img_data = extract_data(image_path, annotations_path)
+# print(read_image(img_data))
+
+# annotations_path = "./read-annotations/aaron-judge.xml"
+# draw_boxes(image_path, annotations_path)
 

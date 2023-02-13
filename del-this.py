@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
 import xml.etree.ElementTree as ET
+import easyocr
+
+# Set up EasyOCR
+reader = easyocr.Reader(['en'])
 
 img_path = "./assets/labeled-images/1.png"
 img = cv2.imread(img_path)
@@ -41,37 +45,32 @@ for i in range(len(y_coords) - 1):
     line_gray = gray[y1:y2, :]
     line_thresh = thresh[y1:y2, :]
 
-    # Find contours in the grayscale image
-    contours, _ = cv2.findContours(line_thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    # Use EasyOCR to find the digits in the line
+    results = reader.readtext(line_img)
 
-    # Loop through each contour and add it as an object to the XML tree
-    counter = 0
-    for contour in contours:
-        # Get the bounding box for the contour
-        x, y, w, h = cv2.boundingRect(contour)
+    # Loop through each result and add it as an object to the XML tree
+    for result in results:
+        # Get the bounding box for the result
+        bbox = result[0]
+        x, y, w, h = bbox[0], bbox[1], bbox[2] - bbox[0], bbox[3] - bbox[1]
 
-        # Check if the contour is small enough to be a digit
-        if w < img.shape[1] // 2 and h < img.shape[0] // 2:
-            # Create the XML element for the object
-            obj = ET.SubElement(root, "object")
-            ET.SubElement(obj, "name").text = "digit"
-            ET.SubElement(obj, "pose").text = "Unspecified"
-            ET.SubElement(obj, "truncated").text = "0"
-            ET.SubElement(obj, "difficult").text = "0"
-            bbox = ET.SubElement(obj, "bndbox")
-            ET.SubElement(bbox, "xmin").text = str(x)
-            ET.SubElement(bbox, "ymin").text = str(y)
-            ET.SubElement(bbox, "xmax").text = str(x + w)
-            ET.SubElement(bbox, "ymax").text = str(y + h)
+        # Create the XML element for the object
+        obj = ET.SubElement(root, "object")
+        ET.SubElement(obj, "name").text = "digit"
+        ET.SubElement(obj, "pose").text = "Unspecified"
+        ET.SubElement(obj, "truncated").text = "0"
+        ET.SubElement(obj, "difficult").text = "0"
+        bbox = ET.SubElement(obj, "bndbox")
+        ET.SubElement(bbox, "xmin").text = str(x)
+        ET.SubElement(bbox, "ymin").text = str(y)
+        ET.SubElement(bbox, "xmax").text = str(x + w)
+        ET.SubElement(bbox, "ymax").text = str(y + h)
 
         # Draw the bounding box on the image
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-        # Save the annotated image
-        cv2.imwrite(f"annotated_image{counter}.png".format(counter), img)
-        counter += 1
-
-# cv2.imwrite("annotated_image.png", img)
+# Save the annotated image
+cv2.imwrite("annotated_image.png", img)
 
 # Write the XML file
 tree = ET.ElementTree(root)

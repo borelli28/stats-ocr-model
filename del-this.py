@@ -18,7 +18,7 @@ thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)[1]
 vertical_projection = np.sum(thresh, axis=1)
 y_coords = np.where(vertical_projection > 0)[0]
 
-# Crop each line of numbers and find contours
+# Create the root element for the XML file
 root = ET.Element("annotation")
 ET.SubElement(root, "folder").text = "images"
 ET.SubElement(root, "filename").text = "mike-brosseau.png"
@@ -32,6 +32,7 @@ ET.SubElement(size, "height").text = str(height)
 ET.SubElement(size, "depth").text = str(depth)
 ET.SubElement(root, "segmented").text = "0"
 
+# Loop through each line of numbers
 for i in range(len(y_coords) - 1):
     y1 = y_coords[i]
     y2 = y_coords[i + 1]
@@ -41,9 +42,10 @@ for i in range(len(y_coords) - 1):
     line_thresh = thresh[y1:y2, :]
 
     # Find contours in the grayscale image
-    contours, _ = cv2.findContours(gray, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+    contours, _ = cv2.findContours(line_thresh, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
     # Loop through each contour and add it as an object to the XML tree
+    counter = 0
     for contour in contours:
         # Get the bounding box for the contour
         x, y, w, h = cv2.boundingRect(contour)
@@ -63,10 +65,13 @@ for i in range(len(y_coords) - 1):
             ET.SubElement(bbox, "ymax").text = str(y + h)
 
         # Draw the bounding box on the image
-        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
 
-# Save the annotated image
-cv2.imwrite("annotated_image.png", img)
+        # Save the annotated image
+        cv2.imwrite(f"annotated_image{counter}.png".format(counter), img)
+        counter += 1
+
+# cv2.imwrite("annotated_image.png", img)
 
 # Write the XML file
 tree = ET.ElementTree(root)

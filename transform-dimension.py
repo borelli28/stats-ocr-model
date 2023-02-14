@@ -13,5 +13,7 @@ new_im = Image.new('RGB', (2000, 1650), (255, 255, 255))
 # Paste the old image into the new image at the top left corner
 new_im.paste(im, (0, 0))
 
+new_im = new_im.convert('L')
+
 # Save the new image
 new_im.save(img_path)

@@ -139,11 +139,12 @@ def create_annotation_file(filename, image_width, image_height, objects):
         ymax.text = str(box_coords[3][1])
 
     tree = ET.ElementTree(root)
-    tree.write("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml")
+    path = "read-annotations/" + image_path.split("/")[-1].split(".")[0] + "-annotations" +".xml"
+    tree.write(path)
 
     # Prettify xml file
     xml_str = prettify_xml(root)
-    with open("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
+    with open(path, "w") as f:
         f.write(xml_str)
 
 
@@ -218,7 +219,7 @@ def read_image(img_data):
     return prediction
 
 
-image_path = "./assets/labeled-images/1.png"
+image_path = "./assets/labeled-images/3.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
@@ -232,7 +233,7 @@ annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
 print(read_image(img_data))
 
-annotations_path = "./read-annotations/1.xml"
+annotations_path = "./read-annotations/3-annotations.xml"
 draw_boxes(image_path, annotations_path)
 
 

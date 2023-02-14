@@ -1,7 +1,8 @@
 from PIL import Image
 
 # Open image
-im = Image.open("assets/labeled-images/2.png")
+img_path = "assets/labeled-images/2.png"
+im = Image.open(img_path)
 
 # Get current size
 width, height = im.size
@@ -13,4 +14,4 @@ new_im = Image.new('RGB', (2000, 1650), (255, 255, 255))
 new_im.paste(im, (0, 0))
 
 # Save the new image
-new_im.save("example_new.jpg")
+new_im.save(img_path)

@@ -1,7 +1,7 @@
 from PIL import Image
 
 # Open image
-img_path = "assets/labeled-images/2.png"
+img_path = "assets/labeled-images/35.png"
 im = Image.open(img_path)
 
 # Get current size

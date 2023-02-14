@@ -1,7 +1,7 @@
 from PIL import Image
 
 """
-	Transform images dimensions into 2000x1650 by adding whitespace
+Transform images dimensions into 2000x1650 by adding whitespace
 """
 
 # Open image

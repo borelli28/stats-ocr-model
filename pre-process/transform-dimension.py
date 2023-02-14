@@ -5,7 +5,7 @@ Transform images dimensions into 2000x1650 by adding whitespace
 """
 
 # Open image
-img_path = "assets/labeled-images/1.png"
+img_path = "../assets/labeled-images/1.png"
 im = Image.open(img_path)
 
 # Get current size

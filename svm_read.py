@@ -5,6 +5,11 @@ import os
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import cv2
+import easyocr
+
+
+# Needs to run only once to load the model into memory
+reader = easyocr.Reader(["en"], gpu=False)
 
 
 def draw_boxes(image_path, annotations_path):
@@ -78,9 +83,6 @@ def prettify_xml(elem):
 def create_annotation_file(filename, image_width, image_height, objects):
     root = ET.Element("annotation")
 
-    print("\nobjects")
-    print(objects)
-
     folder = ET.SubElement(root, "folder")
     folder.text = "images"
 
@@ -128,7 +130,7 @@ def create_annotation_file(filename, image_width, image_height, objects):
         # xmin, ymin, xmax, ymax
         bndbox = ET.SubElement(object_, "bndbox")
         xmin = ET.SubElement(bndbox, "xmin")
-        xmin.text = str(box_coords[0][0])
+        xmin.text = str(box_coords[0][0] - 5)   # - 5, is a hack for the bounding box to include the "." character
         ymin = ET.SubElement(bndbox, "ymin")
         ymin.text = str(box_coords[1][1])
         xmax = ET.SubElement(bndbox, "xmax")
@@ -202,8 +204,6 @@ def extract_data(image_path, annotations_path):
 
 
 def read_image(img_data):
-    print("\nimg_data")
-    print(img_data)
 
     # Convert the lists to numpy arrays
     features = np.array(img_data, dtype=np.float32)
@@ -218,27 +218,21 @@ def read_image(img_data):
     return prediction
 
 
-image_path = "./assets/labeled-images/aaron-judge.png"
+image_path = "./assets/labeled-images/1.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
+result = reader.readtext(image_path)
+
 img = Image.open(image_path)
+width, height = img.size
+create_annotation_file(image_path, width, height, result)
 
-preprocessed_image = cv2.imread(image_path, 0)
-result = preprocessed_image.reshape(-1)
-print(type(result))
-result = [result]
-print(type(result))
+annotations_path = "./read-annotations"
+img_data = extract_data(image_path, annotations_path)
+print(read_image(img_data))
 
-print(read_image(result))
+annotations_path = "./read-annotations/1.xml"
+draw_boxes(image_path, annotations_path)
 
-# width, height = img.size
-# create_annotation_file(image_path, width, height, result)
-
-# annotations_path = "./read-annotations"
-# img_data = extract_data(image_path, annotations_path)
-# print(read_image(img_data))
-
-# annotations_path = "./read-annotations/aaron-judge.xml"
-# draw_boxes(image_path, annotations_path)
 

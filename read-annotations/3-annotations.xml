@@ -13,7 +13,7 @@
   </size>
   <segmented>0</segmented>
   <object>
-    <name>102</name>
+    <name>.102</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -25,7 +25,7 @@
     </bndbox>
   </object>
   <object>
-    <name>103</name>
+    <name>.103</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -37,7 +37,7 @@
     </bndbox>
   </object>
   <object>
-    <name>104</name>
+    <name>.104</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -49,7 +49,7 @@
     </bndbox>
   </object>
   <object>
-    <name>105</name>
+    <name>.105</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -61,7 +61,7 @@
     </bndbox>
   </object>
   <object>
-    <name>106</name>
+    <name>.106</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -73,7 +73,7 @@
     </bndbox>
   </object>
   <object>
-    <name>107</name>
+    <name>.107</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -85,7 +85,7 @@
     </bndbox>
   </object>
   <object>
-    <name>108</name>
+    <name>.108</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -97,7 +97,7 @@
     </bndbox>
   </object>
   <object>
-    <name>109</name>
+    <name>.109</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -109,7 +109,7 @@
     </bndbox>
   </object>
   <object>
-    <name>110</name>
+    <name>.110</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -121,7 +121,7 @@
     </bndbox>
   </object>
   <object>
-    <name>111</name>
+    <name>.111</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -133,7 +133,7 @@
     </bndbox>
   </object>
   <object>
-    <name>112</name>
+    <name>.112</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -145,7 +145,7 @@
     </bndbox>
   </object>
   <object>
-    <name>113</name>
+    <name>.113</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -157,7 +157,7 @@
     </bndbox>
   </object>
   <object>
-    <name>114</name>
+    <name>.114</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -169,7 +169,7 @@
     </bndbox>
   </object>
   <object>
-    <name>115</name>
+    <name>.115</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -181,7 +181,7 @@
     </bndbox>
   </object>
   <object>
-    <name>116</name>
+    <name>.116</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -193,7 +193,7 @@
     </bndbox>
   </object>
   <object>
-    <name>117</name>
+    <name>.117</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -205,7 +205,7 @@
     </bndbox>
   </object>
   <object>
-    <name>118</name>
+    <name>.118</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -217,7 +217,7 @@
     </bndbox>
   </object>
   <object>
-    <name>119</name>
+    <name>.119</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -229,7 +229,7 @@
     </bndbox>
   </object>
   <object>
-    <name>120</name>
+    <name>.120</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -241,7 +241,7 @@
     </bndbox>
   </object>
   <object>
-    <name>121</name>
+    <name>.121</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -253,7 +253,7 @@
     </bndbox>
   </object>
   <object>
-    <name>122</name>
+    <name>.122</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -265,7 +265,7 @@
     </bndbox>
   </object>
   <object>
-    <name>123</name>
+    <name>.123</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -277,7 +277,7 @@
     </bndbox>
   </object>
   <object>
-    <name>124</name>
+    <name>.124</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -289,7 +289,7 @@
     </bndbox>
   </object>
   <object>
-    <name>125</name>
+    <name>.125</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -301,7 +301,7 @@
     </bndbox>
   </object>
   <object>
-    <name>126</name>
+    <name>.126</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -313,7 +313,7 @@
     </bndbox>
   </object>
   <object>
-    <name>127</name>
+    <name>.127</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -325,7 +325,7 @@
     </bndbox>
   </object>
   <object>
-    <name>128</name>
+    <name>.128</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -337,7 +337,7 @@
     </bndbox>
   </object>
   <object>
-    <name>129</name>
+    <name>.129</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -349,7 +349,7 @@
     </bndbox>
   </object>
   <object>
-    <name>130</name>
+    <name>.130</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -361,7 +361,7 @@
     </bndbox>
   </object>
   <object>
-    <name>131</name>
+    <name>.131</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -373,7 +373,7 @@
     </bndbox>
   </object>
   <object>
-    <name>132</name>
+    <name>.132</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -385,7 +385,7 @@
     </bndbox>
   </object>
   <object>
-    <name>133</name>
+    <name>.133</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -397,7 +397,7 @@
     </bndbox>
   </object>
   <object>
-    <name>134</name>
+    <name>.134</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -409,7 +409,7 @@
     </bndbox>
   </object>
   <object>
-    <name>135</name>
+    <name>.135</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -421,7 +421,7 @@
     </bndbox>
   </object>
   <object>
-    <name>136</name>
+    <name>.136</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -433,7 +433,7 @@
     </bndbox>
   </object>
   <object>
-    <name>137</name>
+    <name>.137</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -445,7 +445,7 @@
     </bndbox>
   </object>
   <object>
-    <name>138</name>
+    <name>.138</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -457,7 +457,7 @@
     </bndbox>
   </object>
   <object>
-    <name>139</name>
+    <name>.139</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -469,7 +469,7 @@
     </bndbox>
   </object>
   <object>
-    <name>140</name>
+    <name>.140</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -481,7 +481,7 @@
     </bndbox>
   </object>
   <object>
-    <name>141</name>
+    <name>.141</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -493,7 +493,7 @@
     </bndbox>
   </object>
   <object>
-    <name>142</name>
+    <name>.142</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -505,7 +505,7 @@
     </bndbox>
   </object>
   <object>
-    <name>143</name>
+    <name>.143</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -517,7 +517,7 @@
     </bndbox>
   </object>
   <object>
-    <name>144</name>
+    <name>.144</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -529,7 +529,7 @@
     </bndbox>
   </object>
   <object>
-    <name>145</name>
+    <name>.145</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -541,7 +541,7 @@
     </bndbox>
   </object>
   <object>
-    <name>146</name>
+    <name>.146</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -553,7 +553,7 @@
     </bndbox>
   </object>
   <object>
-    <name>147</name>
+    <name>.147</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -565,7 +565,7 @@
     </bndbox>
   </object>
   <object>
-    <name>148</name>
+    <name>.148</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -577,7 +577,7 @@
     </bndbox>
   </object>
   <object>
-    <name>149</name>
+    <name>.149</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -589,7 +589,7 @@
     </bndbox>
   </object>
   <object>
-    <name>150</name>
+    <name>.150</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -601,7 +601,7 @@
     </bndbox>
   </object>
   <object>
-    <name>151</name>
+    <name>.151</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>
@@ -613,7 +613,7 @@
     </bndbox>
   </object>
   <object>
-    <name>152</name>
+    <name>.152</name>
     <pose>Unspecified</pose>
     <truncated>0</truncated>
     <difficult>0</difficult>

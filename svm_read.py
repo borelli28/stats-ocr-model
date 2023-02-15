@@ -116,7 +116,7 @@ def create_annotation_file(filename, image_width, image_height, objects):
 
     for obj in objects:
         box_coords = obj[0]
-        label_value = obj[1]
+        label_value = "." + obj[1]
         pred_accuracy = obj[2]
 
         # print(box_coords)

@@ -21,6 +21,7 @@ def draw_boxes(image_path, annotations_path):
 
     # Grab boxes values and draws the rectangles
     for obj in root.iter("object"):
+        name = obj.find("name").text
         bndbox = obj.find("bndbox")
 
         xmin = None
@@ -66,6 +67,11 @@ def draw_boxes(image_path, annotations_path):
 
         # Draw rectangle on image
         cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
+        # Define the font and font scale
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fontScale = 0.5
+        # Draw text on image
+        cv2.putText(img, name, (xmin + 100, ymin + 15), font, fontScale, (0, 0, 255), 1)
 
     # Display image
     cv2.imshow("Image with bounding boxes", img)

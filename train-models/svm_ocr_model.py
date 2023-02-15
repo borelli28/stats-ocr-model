@@ -68,6 +68,9 @@ def extract_data():
 
         # Find the filename of the image
         image_filename = tree.find("filename").text
+        # if the filename does not have an extension, add one
+        if image_filename[-1] != "g":
+            image_filename = image_filename + ".png"
         
         # Construct the full path to the image file
         image_path = os.path.join("../assets/labeled-images", image_filename)

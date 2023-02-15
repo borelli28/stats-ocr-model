@@ -5,6 +5,11 @@ import os
 import xml.etree.ElementTree as ET
 from xml.dom import minidom
 import cv2
+import easyocr
+
+
+# Needs to run only once to load the model into memory
+reader = easyocr.Reader(["en"], gpu=False)
 
 
 def draw_boxes(image_path, annotations_path):
@@ -16,6 +21,7 @@ def draw_boxes(image_path, annotations_path):
 
     # Grab boxes values and draws the rectangles
     for obj in root.iter("object"):
+        name = obj.find("name").text
         bndbox = obj.find("bndbox")
 
         xmin = None
@@ -61,6 +67,11 @@ def draw_boxes(image_path, annotations_path):
 
         # Draw rectangle on image
         cv2.rectangle(img, (xmin, ymin), (xmax, ymax), (255, 0, 0), 2)
+        # Define the font and font scale
+        font = cv2.FONT_HERSHEY_SIMPLEX
+        fontScale = 0.5
+        # Draw text on image
+        cv2.putText(img, name, (xmin + 100, ymin + 15), font, fontScale, (0, 0, 255), 1)
 
     # Display image
     cv2.imshow("Image with bounding boxes", img)
@@ -77,9 +88,6 @@ def prettify_xml(elem):
 # Create the annotation file in PASCAL VOX XML format
 def create_annotation_file(filename, image_width, image_height, objects):
     root = ET.Element("annotation")
-
-    print("\nobjects")
-    print(objects)
 
     folder = ET.SubElement(root, "folder")
     folder.text = "images"
@@ -108,6 +116,7 @@ def create_annotation_file(filename, image_width, image_height, objects):
 
     for obj in objects:
         box_coords = obj[0]
+        # label_value = "." + obj[1]    # Uncomment when labeling decimals(.002, .565)
         label_value = obj[1]
         pred_accuracy = obj[2]
 
@@ -128,7 +137,7 @@ def create_annotation_file(filename, image_width, image_height, objects):
         # xmin, ymin, xmax, ymax
         bndbox = ET.SubElement(object_, "bndbox")
         xmin = ET.SubElement(bndbox, "xmin")
-        xmin.text = str(box_coords[0][0])
+        xmin.text = str(box_coords[0][0] - 5)   # - 5, is a hack for the bounding box to include the "." character
         ymin = ET.SubElement(bndbox, "ymin")
         ymin.text = str(box_coords[1][1])
         xmax = ET.SubElement(bndbox, "xmax")
@@ -137,11 +146,12 @@ def create_annotation_file(filename, image_width, image_height, objects):
         ymax.text = str(box_coords[3][1])
 
     tree = ET.ElementTree(root)
-    tree.write("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml")
+    path = "read-annotations/" + image_path.split("/")[-1].split(".")[0] + "-annotations" +".xml"
+    tree.write(path)
 
     # Prettify xml file
     xml_str = prettify_xml(root)
-    with open("read-annotations/" + image_path.split("/")[-1].split(".")[0] + ".xml", "w") as f:
+    with open(path, "w") as f:
         f.write(xml_str)
 
 
@@ -202,8 +212,6 @@ def extract_data(image_path, annotations_path):
 
 
 def read_image(img_data):
-    print("\nimg_data")
-    print(img_data)
 
     # Convert the lists to numpy arrays
     features = np.array(img_data, dtype=np.float32)
@@ -218,27 +226,21 @@ def read_image(img_data):
     return prediction
 
 
-image_path = "./assets/labeled-images/aaron-judge.png"
+image_path = "./assets/labeled-images/35.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
+result = reader.readtext(image_path)
+
 img = Image.open(image_path)
+width, height = img.size
+create_annotation_file(image_path, width, height, result)
 
-preprocessed_image = cv2.imread(image_path, 0)
-result = preprocessed_image.reshape(-1)
-print(type(result))
-result = [result]
-print(type(result))
+annotations_path = "./read-annotations"
+img_data = extract_data(image_path, annotations_path)
+print(read_image(img_data))
 
-print(read_image(result))
+annotations_path = "./read-annotations/35-annotations.xml"
+draw_boxes(image_path, annotations_path)
 
-# width, height = img.size
-# create_annotation_file(image_path, width, height, result)
-
-# annotations_path = "./read-annotations"
-# img_data = extract_data(image_path, annotations_path)
-# print(read_image(img_data))
-
-# annotations_path = "./read-annotations/aaron-judge.xml"
-# draw_boxes(image_path, annotations_path)
 

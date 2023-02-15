@@ -5,7 +5,7 @@ import joblib
 svm_model = joblib.load("./models/svm_model.pkl")
 
 # Load the image
-image_path = "./assets/labeled-images/aaron-judge.png"
+image_path = "./assets/labeled-images/jazz-chisholm-jr.png"
 image = cv2.imread(image_path)
 
 # Convert the image to grayscale

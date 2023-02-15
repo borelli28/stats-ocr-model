@@ -225,7 +225,7 @@ def read_image(img_data):
     return prediction
 
 
-image_path = "./assets/labeled-images/3.png"
+image_path = "./assets/labeled-images/20.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
@@ -239,7 +239,7 @@ annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
 print(read_image(img_data))
 
-annotations_path = "./read-annotations/3-annotations.xml"
+annotations_path = "./read-annotations/20-annotations.xml"
 draw_boxes(image_path, annotations_path)
 
 

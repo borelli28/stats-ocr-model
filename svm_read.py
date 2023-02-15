@@ -116,7 +116,8 @@ def create_annotation_file(filename, image_width, image_height, objects):
 
     for obj in objects:
         box_coords = obj[0]
-        label_value = "." + obj[1]
+        # label_value = "." + obj[1]    # Uncomment when labeling decimals(.002, .565)
+        label_value = obj[1]
         pred_accuracy = obj[2]
 
         # print(box_coords)
@@ -225,7 +226,7 @@ def read_image(img_data):
     return prediction
 
 
-image_path = "./assets/labeled-images/20.png"
+image_path = "./assets/labeled-images/35.png"
 
 svm_model = joblib.load("./models/svm_model.pkl")
 
@@ -239,7 +240,7 @@ annotations_path = "./read-annotations"
 img_data = extract_data(image_path, annotations_path)
 print(read_image(img_data))
 
-annotations_path = "./read-annotations/20-annotations.xml"
+annotations_path = "./read-annotations/35-annotations.xml"
 draw_boxes(image_path, annotations_path)
 
 

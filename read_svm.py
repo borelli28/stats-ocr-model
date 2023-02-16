@@ -196,14 +196,10 @@ def draw_image(image_path):
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-svm_model = joblib.load("./models/svm_model.pkl")
 
+svm_model = joblib.load("./models/svm_model.pkl")
 # Load the image
 image_path = "./assets/labeled-images/jazz-chisholm-jr.png"
 
 draw_image(image_path)
-
-
-
-
 

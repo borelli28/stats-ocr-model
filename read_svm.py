@@ -6,6 +6,66 @@ import xml.etree.ElementTree as ET
 from PIL import Image
 
 
+def create_annotation(image_path, object_name, xmin, ymin, xmax, ymax, width, height):
+    # create annotation object
+    annotation = ET.Element("annotation")
+
+    # create sub elements
+    folder = ET.SubElement(annotation, "folder")
+    folder.text = os.path.dirname(image_path)
+
+    filename = ET.SubElement(annotation, "filename")
+    filename.text = os.path.basename(image_path)
+
+    path = ET.SubElement(annotation, "path")
+    path.text = image_path
+
+    source = ET.SubElement(annotation, "source")
+    database = ET.SubElement(source, "database")
+    database.text = "Unknown"
+
+    size = ET.SubElement(annotation, "size")
+    w = ET.SubElement(size, "width")
+    w.text = str(width)
+    h = ET.SubElement(size, "height")
+    h.text = str(height)
+    d = ET.SubElement(size, "depth")
+    d.text = "3"
+
+    segmented = ET.SubElement(annotation, "segmented")
+    segmented.text = "0"
+
+    # create object element
+    object = ET.SubElement(annotation, "object")
+    name = ET.SubElement(object, "name")
+    name.text = object_name
+    pose = ET.SubElement(object, "pose")
+    pose.text = "Unspecified"
+    truncated = ET.SubElement(object, "truncated")
+    truncated.text = "0"
+    difficult = ET.SubElement(object, "difficult")
+    difficult.text = "0"
+    bndbox = ET.SubElement(object, "bndbox")
+    xmin_element = ET.SubElement(bndbox, "xmin")
+    xmin_element.text = str(xmin)
+    ymin_element = ET.SubElement(bndbox, "ymin")
+    ymin_element.text = str(ymin)
+    xmax_element = ET.SubElement(bndbox, "xmax")
+    xmax_element.text = str(xmax)
+    ymax_element = ET.SubElement(bndbox, "ymax")
+    ymax_element.text = str(ymax)
+
+    # create an ElementTree object
+    tree = ET.ElementTree(annotation)
+
+    # write the annotation to file
+    annotation_dir = "./read-annotations"
+    annotation_path = os.path.join(annotation_dir, os.path.splitext(os.path.basename(image_path))[0] + ".xml")
+    tree.write(annotation_path)
+
+    return annotation_path
+
+
 def extract_features(image):
     # Convert the image to a NumPy array with a consistent shape
     image_array = np.array(image, dtype=np.float32)
@@ -30,7 +90,7 @@ def extract_labels(annotation):
 
 def extract_data():
     print("Extracting data from training data...")
-    annotation_folder = "../assets/annotations"
+    annotation_folder = "./read-annotations/"
 
     # List to store the features and labels
     X = []
@@ -61,7 +121,7 @@ def extract_data():
             image_filename = image_filename + ".png"
         
         # Construct the full path to the image file
-        image_path = os.path.join("../assets/labeled-images", image_filename)
+        image_path = os.path.join("./assets/labeled-images", image_filename)
         
         # Open the image
         image = Image.open(image_path)
@@ -124,6 +184,11 @@ for i, region in enumerate(text_regions):
     if len(contour) >= 4:
         x, y, w, h = cv2.boundingRect(contour)
         cv2.rectangle(image, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+        # Create annotation file for this object
+        object_name = "text_region"  # replace with appropriate object name
+        annotation = create_annotation(image_path, object_name, x, y, x+w, y+h, image.shape[1], image.shape[0])
+        print(annotation)
 
         # Add the predicted labels as text within the rectangle
         # label_text = ''.join(labels)

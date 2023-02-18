@@ -156,7 +156,22 @@ transform = transforms.Compose([
 
 batch_size = 10
 num_epochs = 10
-num_classes = 83
+
+
+classes = set()
+for filename in os.listdir('../assets/annotations'):
+    if filename.endswith('.xml'):
+        tree = ET.parse(os.path.join('../assets/annotations', filename))
+        root = tree.getroot()
+        for obj in root.findall('object'):
+            obj_name = obj.find('name').text
+            classes.add(obj_name)
+
+num_classes = len(classes)
+print(f'Number of classes: {num_classes}')
+# num_classes = 83
+
+
 annotations_path = "../assets/annotations"
 images_path = "../assets/labeled-images"
 model = train(annotations_path, images_path, batch_size, num_epochs, num_classes)

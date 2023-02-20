@@ -89,7 +89,6 @@ class CNN_OCR(nn.Module):
         return x
 
 
-
 def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
     try:
         dataset = CustomDataset(annotations_path, images_path)
@@ -131,6 +130,7 @@ def train(annotations_path, images_path, batch_size, num_epochs, num_classes):
             return model
     except Exception as error:
         print(error)
+
 
 # Evaluate the model accuracy based on test data
 def test(model, test_dataloader, loss_function):

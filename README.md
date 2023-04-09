@@ -67,7 +67,9 @@ Annotations are saved in `stats-ocr-model/assets/annotations` directory
 Labeled images are saved in `stats-ocr-model/assets/labeled-images` directory
 
 Image labeling software: https://github.com/NaturalIntelligence/imglab
+
 Installation guide: https://github.com/NaturalIntelligence/imglab/blob/master/docs/guide.md/#offline-installation
+
 
 ## License
 

@@ -6,8 +6,6 @@ This will be a OCR(Optical Character Recognition) model to extract statistics fr
 
 - SVM model: Current average accuracy in test data: **90.0%**
 
-- CNN model: Current average accuracy in test data: **10.0%**
-
 ## Install Linux/MacOS
 
 Clone repo
@@ -50,11 +48,6 @@ Trains SVM OCR model with annotations and labeled images in ./assets directory
 python3 svm_ocr_model.py
 ```
 
-
-Trains CNN OCR model with annotations and labeled images in ./assets directory
-```bash
-python3 cnn_ocr_model.py
-```
 
 ## Training the model with your data
 
